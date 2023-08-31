@@ -1,10 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
-  return <div>3D Dev Portfolio</div>;
+  return (
+    <BrowserRouter>
+      <div className="relative z-0 bg-primary">
+        <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+          {/*NavBar*/}
+          {/*Hero*/}
+        </div>
+        {/*About*/}
+        {/*Experience*/}
+        {/*works*/}
+      </div>
+      <div className="relative z-0" id="footer">
+        {/*Contact */}
+      </div>
+    </BrowserRouter>
+  );
 };
 
 export default App;
