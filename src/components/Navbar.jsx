@@ -3,19 +3,33 @@ import { Link } from "react-router-dom";
 
 import { styles } from "../styles";
 import { navLinks } from "../constants"; //structured about, work, title
-import { logo, menu, close } from "../assets";
+import { logo, menu, close, logoWhiteNoBG } from "../assets";
 
 const Navbar = () => {
-  console.log("logo", logo);
+  const [acive, setActice] = useState("");
+
   return (
     <nav>
-      <div>
-        <Link>
-          <p className="text-white text-[18px] font-bold cursor-pointer flex">
-            Christian &nbsp;
-            <span className="sm:block hidden"> | Web Developer</span>
-          </p>
+      <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
+        <Link
+          to="/"
+          className="flex items-center"
+          onClick={() => {
+            setActice("");
+            window.scrollTo(0, 0);
+          }}
+        >
+          <img
+            src={logoWhiteNoBG}
+            alt="logo"
+            className="w-16 h-16 object-contain"
+          />
         </Link>
+        <ul className="list-none hidden sm:flex flex-row gap-10">
+          {navLinks.map((link) => {
+            return <li key={link.id}>{link.title}</li>;
+          })}
+        </ul>
       </div>
     </nav>
   );
