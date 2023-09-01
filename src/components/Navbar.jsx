@@ -48,13 +48,25 @@ const Navbar = () => {
             alt="menu"
             className="h-[28px] w-[28px] cursor-pointer object-contain"
             onClick={() => {
-              if (!menuToggle) {
-                setMenuToggle(true);
-              } else {
-                setMenuToggle(false);
-              }
+              setMenuToggle(!menuToggle);
             }}
           ></img>
+
+          <div
+            className={`${
+              !menuToggle ? "hidden" : "flex"
+            } black-gradient absolute right-0 top-20 z-10 mx-4 my-2 min-w-[100px] px-4 pb-2 pt-4`}
+          >
+            <ul className="flex list-none flex-col gap-4">
+              {navLinks.map((link) => {
+                return (
+                  <li key={link.id} className={`cursor-pointer`}>
+                    {link.title}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
