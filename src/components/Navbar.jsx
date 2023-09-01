@@ -7,6 +7,7 @@ import { logo, menu, close, logoWhiteNoBG } from "../assets";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
+  const [menuToggle, setMenuToggle] = useState(false);
 
   return (
     <nav
@@ -17,7 +18,7 @@ const Navbar = () => {
           to="/"
           className="flex items-center"
           onClick={() => {
-            setActice("");
+            setActive("");
             window.scrollTo(0, 0);
           }}
         >
@@ -34,13 +35,27 @@ const Navbar = () => {
                 key={link.id}
                 className={`${
                   active === link.title ? "text-white" : "text-secondary"
-                } cursor-pointer font-medium hover:text-white`}
+                } cursor-pointer text-[18px] font-medium hover:text-white`}
               >
                 {link.title}
               </li>
             );
           })}
         </ul>
+        <div className="sm:hidden">
+          <img
+            src={menuToggle ? close : menu}
+            alt="menu"
+            className="h-[28px] w-[28px] cursor-pointer object-contain"
+            onClick={() => {
+              if (!menuToggle) {
+                setMenuToggle(true);
+              } else {
+                setMenuToggle(false);
+              }
+            }}
+          ></img>
+        </div>
       </div>
     </nav>
   );
