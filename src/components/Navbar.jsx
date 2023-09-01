@@ -36,6 +36,9 @@ const Navbar = () => {
                 className={`${
                   active === link.title ? "text-white" : "text-secondary"
                 } cursor-pointer text-[18px] font-medium hover:text-white`}
+                onClick={() => {
+                  setActive(link.title);
+                }}
               >
                 {link.title}
               </li>
@@ -46,7 +49,7 @@ const Navbar = () => {
           <img
             src={menuToggle ? close : menu}
             alt="menu"
-            className="h-[28px] w-[28px] cursor-pointer object-contain"
+            className="h-[20px] w-[20px] cursor-pointer object-contain"
             onClick={() => {
               setMenuToggle(!menuToggle);
             }}
@@ -55,12 +58,20 @@ const Navbar = () => {
           <div
             className={`${
               !menuToggle ? "hidden" : "flex"
-            } black-gradient absolute right-0 top-20 z-10 mx-4 my-2 min-w-[100px] px-4 pb-2 pt-4`}
+            } black-gradient absolute right-0 top-20 z-10 mx-4 my-2 min-w-[140px] px-4 pb-2 pt-4`}
           >
-            <ul className="flex list-none flex-col gap-4">
+            <ul className="flex list-none flex-col gap-4 text-secondary">
               {navLinks.map((link) => {
                 return (
-                  <li key={link.id} className={`cursor-pointer`}>
+                  <li
+                    key={link.id}
+                    className={`cursor-pointer text-[16px] ${
+                      active === link.title ? "text-white" : "text-secondary"
+                    }`}
+                    onClick={() => {
+                      setActive(link.title);
+                    }}
+                  >
                     {link.title}
                   </li>
                 );
