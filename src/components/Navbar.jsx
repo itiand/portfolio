@@ -9,7 +9,7 @@ const Navbar = () => {
   const [acive, setActice] = useState("");
 
   return (
-    <nav>
+    <nav className={`${styles.paddingX} w-full flex items-center py-5`}>
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
         <Link
           to="/"
@@ -27,7 +27,11 @@ const Navbar = () => {
         </Link>
         <ul className="list-none hidden sm:flex flex-row gap-10">
           {navLinks.map((link) => {
-            return <li key={link.id}>{link.title}</li>;
+            return (
+              <li key={link.id} className="">
+                {link.title}
+              </li>
+            );
           })}
         </ul>
       </div>
