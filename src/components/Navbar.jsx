@@ -40,7 +40,7 @@ const Navbar = () => {
                   setActive(link.title);
                 }}
               >
-                {link.title}
+                <a href={`#${link.id}`}>{link.title}</a>
               </li>
             );
           })}
@@ -69,10 +69,11 @@ const Navbar = () => {
                       active === link.title ? "text-white" : "text-secondary"
                     }`}
                     onClick={() => {
+                      setMenuToggle(!menuToggle);
                       setActive(link.title);
                     }}
                   >
-                    {link.title}
+                    <a href={`#${link.id}`}>{link.title}</a>
                   </li>
                 );
               })}
