@@ -7,14 +7,16 @@ import CanvasLoader from "../Loader";
 const Computers = () => {
   const computer = useGLTF("./desktop_pc/scene.gltf");
   return (
-    //mesh
-    //hemisphere lights
-    //all sorts of light
-    //primitive, which is the computer?
     <mesh>
       <ambientLight />
-      <pointLight intensity={1} />
       <hemisphereLight intensity={0.15} groundColor="black"></hemisphereLight>
+      <pointLight intensity={1} />
+      <primitive
+        object={computer.scene}
+        // scale={isMobile ? 0.7 : 0.75}
+        // position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
+        // rotation={[-0.01, -0.2, -0.1]}
+      />
     </mesh>
   );
 };
@@ -31,8 +33,14 @@ const ComputerCanvas = () => {
       gl={{ preserveDrawingBuffer: true }}
     >
       <Suspense fallback={<CanvasLoader />}>
-        <OrbitControls />
+        <OrbitControls
+          enableZoom={false}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 2}
+        />
+        <Computers />
       </Suspense>
+      <Preload all />
     </Canvas>
   );
 };
