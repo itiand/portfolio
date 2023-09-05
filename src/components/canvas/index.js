@@ -1,3 +1,3 @@
-import Computers from "./Computers";
+import ComputerCanvas from "./Computers";
 
-export { Computers };
+export { ComputerCanvas };
