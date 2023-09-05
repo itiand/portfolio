@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
-// import loader from ../loader
+import CanvasLoader from "../Loader";
 
 const Computers = () => {
   const computer = useGLTF("./desktop_pc/scene.gltf");
@@ -28,7 +28,12 @@ const ComputerCanvas = () => {
         position: [20, 3, 5],
         fov: 25,
       }}
-    ></Canvas>
+      gl={{ preserveDrawingBuffer: true }}
+    >
+      <Suspense fallback={<CanvasLoader />}>
+        <OrbitControls />
+      </Suspense>
+    </Canvas>
   );
 };
 
