@@ -38,6 +38,7 @@ const Computers = ({ isMobile }) => {
 
 const ComputerCanvas = () => {
   const spotLightRef = useRef();
+
   const [isMobile, setIsMobile] = useState(false);
   return (
     <Canvas
@@ -49,30 +50,24 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
       <pointLight intensity={1} />
       <ambientLight intensity={0.7} />
-      {/* <directionalLight /> */}
-      <spotLight
-        ref={spotLightRef}
-        intensity={10}
-        castShadow
-        shadow-mapSize={1024}
-        position={[-20, 10, 5]}
-      />
-      {spotLightRef.current && (
+      <spotLight intensity={100} position={[-20, 10, 5]} ref={spotLightRef} />
+      {/* {spotLightRef.current && (
         <spotLightHelper args={[spotLightRef.current]} />
-      )}
+      )} */}
+      {/* <directionalLight /> */}
 
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-        // autoRotate
-        // enableZoom={false}
-        // maxPolarAngle={Math.PI / 2}
-        // minPolarAngle={Math.PI / 2}
+          // autoRotate
+          enableZoom={false}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 2}
         />
         <Computers />
       </Suspense>
