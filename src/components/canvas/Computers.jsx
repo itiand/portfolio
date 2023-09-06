@@ -48,19 +48,16 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
+
       {/*LIGHTS*/}
-      <hemisphereLight intensity={1} groundColor="black" />
-      <spotLight
-        position={[-20, 50, 10]}
-        angle={0.12}
-        penumbra={1}
-        intensity={1}
-        castShadow
-        shadow-mapSize={1024}
-      />
+      <hemisphereLight intensity={3} groundColor="pink" />
+      <pointLight intensity={1} />
+      {/* <ambientLight intensity={0.4} /> */}
+
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
+          autoRotate
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
