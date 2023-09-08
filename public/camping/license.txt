@@ -1,0 +1,11 @@
+Model Information:
+* title:	Camping
+* source:	https://sketchfab.com/3d-models/camping-1fc8f928eeaa4b71b5d0261c11681e0f
+* author:	dmitriy_mit1 (https://sketchfab.com/dmitriy_mit1)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Camping" (https://sketchfab.com/3d-models/camping-1fc8f928eeaa4b71b5d0261c11681e0f) by dmitriy_mit1 (https://sketchfab.com/dmitriy_mit1) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
