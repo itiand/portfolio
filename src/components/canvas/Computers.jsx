@@ -9,6 +9,11 @@ import CanvasLoader from "../Loader";
 const Avatar = () => {
   const { scene } = useGLTF("./readyPlayerMe.glb");
 
+  scene.traverse((child) => {
+    if (child.isMesh && child.name === "Wolf3D_Hands") {
+      child.visible = false; // hides the hand mesh
+    }
+  });
   return <primitive object={scene} position={[0, -2.9, 0]} scale={5} />;
 };
 
