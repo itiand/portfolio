@@ -6,22 +6,11 @@ import * as THREE from "three";
 
 import CanvasLoader from "../Loader";
 
-// const Computers = () => {
-//   const computer = useGLTF("./desktop_pc/scene.gltf");
-//   return (
-//     <mesh>
-//       <ambientLight />
-//       <hemisphereLight intensity={0.15} groundColor="black"></hemisphereLight>
-//       <pointLight intensity={1} />
-//       <primitive
-//         object={computer.scene}
-//         // scale={isMobile ? 0.7 : 0.75}
-//         // position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
-//         // rotation={[-0.01, -0.2, -0.1]}
-//       />
-//     </mesh>
-//   );
-// };
+const Avatar = () => {
+  const { scene } = useGLTF("./readyPlayerMe.glb");
+
+  return <primitive object={scene} position={[0, -2.9, 0]} scale={5} />;
+};
 
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./toon_cat_free/scene.gltf");
@@ -69,7 +58,8 @@ const ComputerCanvas = () => {
         // maxPolarAngle={Math.PI / 2}
         // minPolarAngle={Math.PI / 2}
         />
-        <Computers />
+        {/* <Computers /> */}
+        <Avatar />
       </Suspense>
       <Preload all />
     </Canvas>
