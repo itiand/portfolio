@@ -32,8 +32,8 @@ const Computers = ({ isMobile }) => {
 
 const ComputerCanvas = () => {
   const spotLightRef = useRef();
-
   const [isMobile, setIsMobile] = useState(false);
+
   return (
     <Canvas
       frameloop="demand"
@@ -44,7 +44,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[1]} />
+      <axesHelper args={[5]} />
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />

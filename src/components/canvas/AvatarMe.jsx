@@ -11,7 +11,14 @@ const Avatar = () => {
     }
   });
 
-  return <primitive object={scene} />;
+  return (
+    <primitive
+      object={scene}
+      position={[0, -10.5, 0]}
+      rotation={[0, 1.2, 0]}
+      scale={17}
+    />
+  );
 };
 
 export default Avatar;
