@@ -68,11 +68,13 @@ const Avatar = () => {
     rightEye.scale.copy(eyeScale);
 
     // console.log("HEAD ROTATION", head.rotation);
-    const rotationAmount = 1;
+    const rotationAmount = 0.3;
     console.log("movementDirection", movementDirection);
-    head.rotation.x = movementDirection.y;
+    head.rotation.x = movementDirection.y * 0.5;
+    head.rotation.y = movementDirection.x * 0.5;
+    console.log("y", head.rotation.y, movementDirection.x);
+    console.log("x", head.rotation.x, movementDirection.y);
 
-    head.rotation.y = movementDirection.x;
     // head.rotation.z -= 0.05;
   }, [eyeScale, movementDirection]);
   ///end blink
