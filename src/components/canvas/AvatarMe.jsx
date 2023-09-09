@@ -7,6 +7,13 @@ const Avatar = () => {
 
   const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
 
+  //hide hands
+  scene.traverse((child) => {
+    if (child.isMesh && child.name === "Wolf3D_Hands") {
+      child.visible = false;
+    }
+  });
+
   /////blink////
   //handle
   const handleBlink = () => {
@@ -17,19 +24,26 @@ const Avatar = () => {
     }, 50);
   };
 
-  //useEffect
+  //useEffect --> blink timer
   useEffect(() => {
     const randomBlinkInterval = Math.random() * 3000 + 2000;
     const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
-    return () => clearInterval;
+
+    return () => clearInterval(blinkInterval);
   }, []);
 
-  //hide hands
-  scene.traverse((child) => {
-    if (child.isMesh && child.name === "Wolf3D_Hands") {
-      child.visible = false;
-    }
-  });
+  //rendering effect
+  useEffect(() => {
+    //find the left and right eye
+    // if found apply the scale based on the eyeScale state (Vector3)
+    //**eyeScale state triggers it */
+
+    const leftEye = scene.getObjectByName("LeftEye");
+    const rightEye = scene.getObjectByName("RightEye");
+
+    leftEye.scale.copy(eyeScale);
+    rightEye.scale.copy(eyeScale);
+  }, [eyeScale]);
 
   return (
     <primitive
