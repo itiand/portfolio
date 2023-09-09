@@ -1,4 +1,5 @@
 import { useGLTF } from "@react-three/drei";
+import { three } from "maath";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 
@@ -6,6 +7,25 @@ const Avatar = () => {
   const { scene } = useGLTF("./readyPlayerMe.glb");
 
   const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
+  const [movementDirection, setMovementDirection] = useState(
+    new THREE.Vector2(),
+  );
+
+  //movement direction state depends on the mouse movement
+  // on mouse move,  set the new direction from the origin to the mouse direction
+  //base on that direction, --> RENDER rotate/bend the head towards that direction
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      //get new direction and normalize the value
+      const x = (event.clientX / window.innerWidth) * 2 - 1; // normalize range --> [-1,1]
+      const y = (event.clientY / window.innerHeight) * 2 - 1; // normalize range ... [-1, 1]
+      setMovementDirection(new THREE.Vector2(x, y));
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  });
 
   //hide hands
   scene.traverse((child) => {
@@ -34,10 +54,6 @@ const Avatar = () => {
 
   //rendering effect
   useEffect(() => {
-    //find the left and right eye
-    // if found apply the scale based on the eyeScale state (Vector3)
-    //**eyeScale state triggers it */
-
     const leftEye = scene.getObjectByName("LeftEye");
     const rightEye = scene.getObjectByName("RightEye");
 
