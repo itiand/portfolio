@@ -1,5 +1,4 @@
 import { useGLTF } from "@react-three/drei";
-import { three } from "maath";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 
@@ -41,7 +40,7 @@ const Avatar = () => {
   ////
 
   /////blink////
-  //handle
+  //blink handle
   const handleBlink = () => {
     setEyeScale(new THREE.Vector3(1, 1, -0.01));
 
@@ -58,26 +57,28 @@ const Avatar = () => {
     return () => clearInterval(blinkInterval);
   }, []);
 
-  //render update
+  ///end blink
+  ////
+
+  //render effect
   useEffect(() => {
     const leftEye = scene.getObjectByName("LeftEye");
     const rightEye = scene.getObjectByName("RightEye");
     const head = scene.getObjectByName("Head");
 
-    leftEye.scale.copy(eyeScale);
-    rightEye.scale.copy(eyeScale);
+    if (leftEye && rightEye) {
+      leftEye.scale.copy(eyeScale);
+      rightEye.scale.copy(eyeScale);
+    }
 
     // console.log("HEAD ROTATION", head.rotation);
-    const rotationAmount = 0.3;
-    console.log("movementDirection", movementDirection);
-    head.rotation.x = movementDirection.y * rotationAmount;
-    head.rotation.y = movementDirection.x * rotationAmount;
-    head.rotation.z = movementDirection.x * 0.15;
-    console.log("y", head.rotation.y, movementDirection.x);
-    console.log("x", head.rotation.x, movementDirection.y);
+    if (head) {
+      const rotationAmount = 0.3;
+      head.rotation.x = movementDirection.y * rotationAmount;
+      head.rotation.y = movementDirection.x * rotationAmount;
+      head.rotation.z = movementDirection.x * 0.15;
+    }
   }, [eyeScale, movementDirection]);
-  ///end blink
-  ////
 
   return (
     <primitive
