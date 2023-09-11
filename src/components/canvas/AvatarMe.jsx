@@ -19,7 +19,7 @@ const Avatar = () => {
   );
 
   //max body rotation
-  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(30);
+  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(15);
   const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
 
   ///head movement
@@ -32,18 +32,6 @@ const Avatar = () => {
       const x = (event.clientX / window.innerWidth) * 2 - 1; // normalize range --> [-1,1]
       const y = (event.clientY / window.innerHeight) * 2 - 1; // normalize range ... [-1, 1]
       setMovementDirection(new THREE.Vector2(x, y));
-
-      //body rotation
-      scene.rotation.y = THREE.MathUtils.clamp(
-        x * 0.3,
-        -MAX_ROTATION_Y,
-        MAX_ROTATION_Y,
-      );
-      scene.rotation.x = THREE.MathUtils.clamp(
-        -y * 0.05,
-        -MAX_ROTATION_X,
-        MAX_ROTATION_X,
-      );
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -89,6 +77,18 @@ const Avatar = () => {
       head.rotation.y = movementDirection.x * rotationAmount;
       head.rotation.z = movementDirection.x * 0.15;
     }
+
+    //body rotation
+    scene.rotation.y = THREE.MathUtils.clamp(
+      movementDirection.x * 0.3,
+      -MAX_ROTATION_Y,
+      MAX_ROTATION_Y,
+    );
+    scene.rotation.x = THREE.MathUtils.clamp(
+      -movementDirection.y * 0.05,
+      -MAX_ROTATION_X,
+      MAX_ROTATION_X,
+    );
   }, [eyeScale, movementDirection, scene]);
 
   return (
