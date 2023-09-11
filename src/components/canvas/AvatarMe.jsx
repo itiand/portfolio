@@ -1,6 +1,7 @@
 import { useGLTF } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
+import { MathUtils } from "three";
 
 const Avatar = () => {
   const { scene } = useGLTF("./readyPlayerMe.glb");
@@ -17,9 +18,12 @@ const Avatar = () => {
     new THREE.Vector2(),
   );
 
+  //max body rotation
+  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(30);
+  const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
+
   ///head movement
   ////
-
   //movement direction state depends on the mouse movement
   // on mouse move,  set the new direction from the origin to the mouse direction
   useEffect(() => {
@@ -28,14 +32,23 @@ const Avatar = () => {
       const x = (event.clientX / window.innerWidth) * 2 - 1; // normalize range --> [-1,1]
       const y = (event.clientY / window.innerHeight) * 2 - 1; // normalize range ... [-1, 1]
       setMovementDirection(new THREE.Vector2(x, y));
+
+      //body rotation
+      scene.rotation.y = THREE.MathUtils.clamp(
+        x * 0.3,
+        -MAX_ROTATION_Y,
+        MAX_ROTATION_Y,
+      );
+      scene.rotation.x = THREE.MathUtils.clamp(
+        -y * 0.05,
+        -MAX_ROTATION_X,
+        MAX_ROTATION_X,
+      );
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
-
-  //head movement render
-
   ///end head movement
   ////
 
@@ -48,15 +61,13 @@ const Avatar = () => {
       setEyeScale(new THREE.Vector3(1, 1, 1));
     }, 50);
   };
-
-  //useEffect --> blink timer
+  //blink useEffect --> timer
   useEffect(() => {
-    const randomBlinkInterval = Math.random() * 3000 + 2000;
+    const randomBlinkInterval = Math.random() * 1000 + 3000;
     const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
 
     return () => clearInterval(blinkInterval);
   }, []);
-
   ///end blink
   ////
 
@@ -78,7 +89,7 @@ const Avatar = () => {
       head.rotation.y = movementDirection.x * rotationAmount;
       head.rotation.z = movementDirection.x * 0.15;
     }
-  }, [eyeScale, movementDirection]);
+  }, [eyeScale, movementDirection, scene]);
 
   return (
     <primitive

@@ -6,17 +6,6 @@ import Avatar from "./AvatarMe";
 
 import CanvasLoader from "../Loader";
 
-// const Avatar = () => {
-//   const { scene } = useGLTF("./readyPlayerMe.glb");
-
-//   scene.traverse((child) => {
-//     if (child.isMesh && child.name === "Wolf3D_Hands") {
-//       child.visible = false; // hides the hand mesh
-//     }
-//   });
-//   return <primitive object={scene} position={[0, -2.9, 0]} scale={5} />;
-// };
-
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./toon_cat_free/scene.gltf");
 
@@ -44,7 +33,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
