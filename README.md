@@ -8,6 +8,7 @@ My 3D portfolio built with React, Vite, and Three.js/R3F.
 - HTML & CSS
 - Three.js & react-three-fiber
 - @react-three/drei
+- Tailwind CSS
 
 ## Setup
 
