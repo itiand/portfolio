@@ -11,7 +11,7 @@ My 3D portfolio built with React, Vite, and Three.js/R3F.
 
 ## Setup
 
-1. `git clone https://github.com/YourUsername/portfolio.git`
+1. `git clone https://github.com/itiand/portfolio.git`
 2. `cd portfolio`
 3. `npm install`
 4. `npm run dev`
