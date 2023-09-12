@@ -53,8 +53,11 @@ const Avatar = () => {
   useEffect(() => {
     const randomBlinkInterval = Math.random() * 1000 + 3000;
     const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
-
-    return () => clearInterval(blinkInterval);
+    window.addEventListener("click", handleBlink);
+    return () => {
+      clearInterval(blinkInterval);
+      window.removeEventListener("click", handleBlink);
+    };
   }, []);
   ///end blink
   ////
