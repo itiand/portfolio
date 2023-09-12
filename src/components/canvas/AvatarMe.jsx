@@ -19,7 +19,7 @@ const Avatar = () => {
   );
 
   //max body rotation
-  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(190);
+  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
   const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
 
   ///head movement
@@ -80,17 +80,16 @@ const Avatar = () => {
 
     //body rotation
     scene.rotation.y = THREE.MathUtils.clamp(
-      movementDirection.x * 0.3 + 1.2,
+      movementDirection.x * 0.5 + 1.2,
       -MAX_ROTATION_Y,
       MAX_ROTATION_Y,
     );
+
     scene.rotation.x = THREE.MathUtils.clamp(
-      -movementDirection.y * 0.03,
+      -movementDirection.y * 0.02,
       -MAX_ROTATION_X,
       MAX_ROTATION_X,
     );
-
-    console.log("scene rotation", scene.rotation.y);
   }, [eyeScale, movementDirection, scene]);
 
   return (
