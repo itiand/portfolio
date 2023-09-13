@@ -47,8 +47,8 @@ const Butterfly = ({ isMobile }) => {
   useEffect(() => {
     const animate = () => {
       // Update the butterfly's position using the updated 3D Simplex noise
-      blueButterfly.current.position.x += noise3D(time, 0, time) * 0.01;
-      blueButterfly.current.position.y += noise3D(time, time, 0) * 0.01;
+      blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
+      blueButterfly.current.position.y += noise3D(time, time, 0) * 0.007;
       blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
 
       time += 0.01;
@@ -63,6 +63,7 @@ const Butterfly = ({ isMobile }) => {
       object={scene}
       ref={blueButterfly}
       position={[5, 3, 5]}
+      rotation={[0.2, 3, 0]}
       scale={0.2}
     />
   );
