@@ -10,6 +10,7 @@ import * as THREE from "three";
 import Avatar from "./AvatarMe";
 
 import CanvasLoader from "../Loader";
+import { createNoise3D, createNoise2D } from "simplex-noise";
 
 // const Computers = ({ isMobile }) => {
 //   const computer = useGLTF("./toon_cat_free/scene.gltf");
@@ -36,6 +37,26 @@ const Butterfly = ({ isMobile }) => {
   useEffect(() => {
     actions["Flying"].reset().fadeIn(0.5).play();
   }, [actions]);
+
+  const noise3D = createNoise3D();
+  console.log("noise3D", noise3D);
+  const noise2D = createNoise2D();
+
+  let time = 0;
+
+  useEffect(() => {
+    const animate = () => {
+      // Update the butterfly's position using the updated 3D Simplex noise
+      blueButterfly.current.position.x += noise3D(time, 0, time) * 0.01;
+      blueButterfly.current.position.y += noise3D(time, time, 0) * 0.01;
+      blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
+
+      time += 0.01;
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  }, []);
 
   return (
     <primitive
