@@ -9,7 +9,7 @@ const Butterfly = ({ isMobile }) => {
   const { actions, names } = useAnimations(animations, blueButterfly);
 
   useEffect(() => {
-    actions["Flying"].reset().fadeIn(0.5).play();
+    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(3).play();
   }, [actions]);
 
   const noise3D = createNoise3D();
