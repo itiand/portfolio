@@ -17,6 +17,12 @@ const Butterfly = ({ isMobile }) => {
   let time = 0;
 
   useEffect(() => {
+    //IMPLEMENTING SENSE OF DIRECTION
+    //initial target
+    //get position
+    //compute direction to the target from current direction
+    //apply movenent to direction
+    //change butterfly direction when it is near its target
     const animate = () => {
       //get current position
       const currentPosition = {
