@@ -19,16 +19,32 @@ const Butterfly = ({ isMobile }) => {
   useEffect(() => {
     //IMPLEMENTING SENSE OF DIRECTION
     //initial target
-    //get position
-    //compute direction to the target from current direction
-    //apply movenent to direction
+    let target = new THREE.Vector3(
+      Math.random() * 10 - 5,
+      Math.random() * 6,
+      Math.random() * 10 - 5,
+    );
+
     //change butterfly direction when it is near its target
+
     const animate = () => {
       //get current position
-      const currentPosition = {
-        x: blueButterfly.current.position.x,
-        z: blueButterfly.current.position.z,
-      };
+      // const currentPosition = {
+      //   x: blueButterfly.current.position.x,
+      //   z: blueButterfly.current.position.z,
+      // };
+      const currentPosition = new THREE.Vector3().copy(
+        blueButterfly.current.position,
+      );
+
+      //compute direction to the target from current direction
+      const direction = new THREE.Vector3()
+        .subVectors(target, currentPosition)
+        .normalize();
+
+      //slowdown and apply movement direction
+      const moveAmount = 0.02;
+      direction.multiplyScalar(moveAmount);
 
       //update butterfly position using noise
       blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
