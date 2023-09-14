@@ -18,9 +18,22 @@ const Butterfly = ({ isMobile }) => {
 
   useEffect(() => {
     const animate = () => {
+      //get current position
+      const currentPosition = {
+        x: blueButterfly.current.position.x,
+        z: blueButterfly.current.position.z,
+      };
+
+      //update butterfly position using noise
       blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
       blueButterfly.current.position.y += noise3D(time, time, 0) * 0.007;
       blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
+
+      //determine the direction
+      const dx = blueButterfly.current.position.x - currentPosition.x;
+      const dz = blueButterfly.current.position.z - currentPosition.z;
+      const rotationY = Math.atan2(dz, dx) - Math.PI / 2; //calculate the roatation
+      blueButterfly.current.rotation.y = rotationY; // apply the rotation
 
       time += 0.01;
       requestAnimationFrame(animate);
