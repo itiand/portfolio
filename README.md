@@ -2,6 +2,8 @@
 
 My 3D portfolio built with React, Vite, and Three.js/R3F.
 
+!["Landing Preview"](https://github.com/itiand/portfolio/blob/main/docs/portfolio-in-construction.gif?raw=true)
+
 ## Tech Stack
 
 - React & Vite
