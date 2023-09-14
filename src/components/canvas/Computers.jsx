@@ -1,16 +1,9 @@
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Preload,
-  useGLTF,
-  useAnimations,
-} from "@react-three/drei";
-import * as THREE from "three";
+import { OrbitControls, Preload } from "@react-three/drei";
 import Avatar from "./AvatarMe";
-
 import CanvasLoader from "../Loader";
-import { createNoise3D, createNoise2D } from "simplex-noise";
+import Butterfly from "./Butterfly";
 
 // const Computers = ({ isMobile }) => {
 //   const computer = useGLTF("./toon_cat_free/scene.gltf");
@@ -24,50 +17,6 @@ import { createNoise3D, createNoise2D } from "simplex-noise";
 //     />
 //   );
 // };
-
-const Butterfly = ({ isMobile }) => {
-  const blueButterfly = useRef();
-  const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
-  const { actions, names } = useAnimations(animations, blueButterfly);
-
-  console.log("animations", animations);
-  console.log("actions", actions);
-  console.log("names", names);
-
-  useEffect(() => {
-    actions["Flying"].reset().fadeIn(0.5).play();
-  }, [actions]);
-
-  const noise3D = createNoise3D();
-  console.log("noise3D", noise3D);
-  const noise2D = createNoise2D();
-
-  let time = 0;
-
-  useEffect(() => {
-    const animate = () => {
-      // Update the butterfly's position using the updated 3D Simplex noise
-      blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
-      blueButterfly.current.position.y += noise3D(time, time, 0) * 0.007;
-      blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
-
-      time += 0.01;
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-  }, []);
-
-  return (
-    <primitive
-      object={scene}
-      ref={blueButterfly}
-      position={[5, 3, 5]}
-      rotation={[0.2, 3, 0]}
-      scale={0.2}
-    />
-  );
-};
 
 const ComputerCanvas = () => {
   const spotLightRef = useRef();
