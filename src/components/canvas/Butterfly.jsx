@@ -84,15 +84,11 @@ const Butterfly = () => {
       );
 
       // clamp the x position, update the target
-      if (
-        blueButterfly.current.position.x === 3 ||
-        blueButterfly.current.position.x === 10
-      ) {
-        target = new THREE.Vector3(
-          Math.random() * 7 + 3,
-          Math.random() * 6,
-          Math.random() * 10 - 5,
-        );
+      // if butterfly reaches the x boundary, set target to opposite boundary
+      if (blueButterfly.current.position.x === 10) {
+        target.x = 3;
+      } else if (blueButterfly.current.position.x === 3) {
+        target.x = 10;
       }
 
       //determine the direction, apply the rotation
