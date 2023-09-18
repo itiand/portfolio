@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { createNoise3D } from "simplex-noise";
 import * as THREE from "three";
+import { useThree } from "@react-three/fiber";
 
-const Butterfly = ({ isMobile }) => {
+const Butterfly = () => {
+  const { camera } = useThree();
   const blueButterfly = useRef();
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
@@ -17,6 +19,34 @@ const Butterfly = ({ isMobile }) => {
   let time = 0;
 
   useEffect(() => {
+    function computeRandomPointWithinFrustum() {
+      const minDist = 2; // the minimum distance from the camera
+      const maxDist = 8; // the maximum distance from the camera
+
+      const randomDirection = new THREE.Vector3(
+        Math.random() * 2 - 1,
+        Math.random() * 2 - 1,
+        Math.random() * 2 - 1,
+      ).normalize();
+      const randomDistance = Math.random() * (maxDist - minDist) + minDist;
+
+      randomDirection.multiplyScalar(randomDistance);
+
+      return camera.position.clone().add(randomDirection);
+    }
+
+    const frustum = new THREE.Frustum();
+    const cameraViewProjectionMatrix = new THREE.Matrix4();
+
+    // Every frame or whenever the camera or viewport changes
+    camera.updateMatrixWorld(); // make sure the camera matrix is updated
+    camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
+    cameraViewProjectionMatrix.multiplyMatrices(
+      camera.projectionMatrix,
+      camera.matrixWorldInverse,
+    );
+    frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
+
     //IMPLEMENTING SENSE OF DIRECTION
     //initial target
     let target = new THREE.Vector3(
@@ -25,14 +55,7 @@ const Butterfly = ({ isMobile }) => {
       Math.random() * 10 - 5,
     );
 
-    //change butterfly direction when it is near its target
-
     const animate = () => {
-      //get current position
-      // const currentPosition = {
-      //   x: blueButterfly.current.position.x,
-      //   z: blueButterfly.current.position.z,
-      // };
       const currentPosition = new THREE.Vector3().copy(
         blueButterfly.current.position,
       );
@@ -51,25 +74,25 @@ const Butterfly = ({ isMobile }) => {
       direction.y += noise3D(time, time, 0) * 0.007;
       direction.z += noise3D(0, time, time) * 0.009;
 
-      // //update butterfly position using noise
-      // blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
-      // blueButterfly.current.position.y += noise3D(time, time, 0) * 0.007;
-      // blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
       blueButterfly.current.position.add(direction); //this instead
 
       //determine the direction
-      // const dx = blueButterfly.current.position.x - currentPosition.x;
-      // const dz = blueButterfly.current.position.z - currentPosition.z;
       const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
       blueButterfly.current.rotation.y = rotationY; // apply the rotation
 
-      // if the butterfly is close to the target, pick a new target
+      //change butterfly direction when it is near its target
       if (currentPosition.distanceTo(target) < 1) {
         target = new THREE.Vector3(
           Math.random() * 10 - 5,
           Math.random() * 6,
           Math.random() * 10 - 5,
         );
+      }
+
+      const isInside = frustum.containsPoint(blueButterfly.current.position);
+      if (!isInside) {
+        // Redirect the butterfly to a new point within the frustum or adjust its position
+        target = computeRandomPointWithinFrustum();
       }
 
       time += 0.01;
