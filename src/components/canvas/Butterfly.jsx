@@ -50,7 +50,7 @@ const Butterfly = () => {
     //IMPLEMENTING SENSE OF DIRECTION
     //initial target
     let target = new THREE.Vector3(
-      Math.random() * 10 - 5,
+      Math.random() * 7 + 3,
       Math.random() * 6,
       Math.random() * 10 - 5,
     );
@@ -74,7 +74,26 @@ const Butterfly = () => {
       direction.y += noise3D(time, time, 0) * 0.007;
       direction.z += noise3D(0, time, time) * 0.009;
 
-      blueButterfly.current.position.add(direction);
+      blueButterfly.current.position.add(direction); //this instead
+
+      // Clamp the butterfly's x-coordinate between 3 and 10
+      blueButterfly.current.position.x = THREE.MathUtils.clamp(
+        blueButterfly.current.position.x,
+        3,
+        10,
+      );
+
+      // clamp the x position, update the target
+      if (
+        blueButterfly.current.position.x === 3 ||
+        blueButterfly.current.position.x === 10
+      ) {
+        target = new THREE.Vector3(
+          Math.random() * 7 + 3,
+          Math.random() * 6,
+          Math.random() * 10 - 5,
+        );
+      }
 
       //determine the direction, apply the rotation
       const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
@@ -83,7 +102,7 @@ const Butterfly = () => {
       //change butterfly direction when it is near its target
       if (currentPosition.distanceTo(target) < 1) {
         target = new THREE.Vector3(
-          Math.random() * 10 - 5,
+          Math.random() * 7 + 3,
           Math.random() * 6,
           Math.random() * 10 - 5,
         );
@@ -97,6 +116,8 @@ const Butterfly = () => {
 
       time += 0.01;
       requestAnimationFrame(animate);
+      console.log("butterflyx", blueButterfly.current.position.x);
+      console.log("targetx", target.x);
     };
 
     animate();
