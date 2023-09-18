@@ -37,7 +37,7 @@ const Butterfly = ({ isMobile }) => {
         blueButterfly.current.position,
       );
 
-      //compute direction to the target from current direction
+      //compute direction to the target from current position
       const direction = new THREE.Vector3()
         .subVectors(target, currentPosition)
         .normalize();
@@ -46,16 +46,31 @@ const Butterfly = ({ isMobile }) => {
       const moveAmount = 0.02;
       direction.multiplyScalar(moveAmount);
 
-      //update butterfly position using noise
-      blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
-      blueButterfly.current.position.y += noise3D(time, time, 0) * 0.007;
-      blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
+      // apply the noise-based movement to the direction
+      direction.x += noise3D(time, 0, time) * 0.009;
+      direction.y += noise3D(time, time, 0) * 0.007;
+      direction.z += noise3D(0, time, time) * 0.009;
+
+      // //update butterfly position using noise
+      // blueButterfly.current.position.x += noise3D(time, 0, time) * 0.09;
+      // blueButterfly.current.position.y += noise3D(time, time, 0) * 0.007;
+      // blueButterfly.current.position.z += noise3D(0, time, time) * 0.01;
+      blueButterfly.current.position.add(direction); //this instead
 
       //determine the direction
-      const dx = blueButterfly.current.position.x - currentPosition.x;
-      const dz = blueButterfly.current.position.z - currentPosition.z;
-      const rotationY = Math.atan2(dz, dx) - Math.PI / 2; //calculate the roatation
+      // const dx = blueButterfly.current.position.x - currentPosition.x;
+      // const dz = blueButterfly.current.position.z - currentPosition.z;
+      const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
       blueButterfly.current.rotation.y = rotationY; // apply the rotation
+
+      // if the butterfly is close to the target, pick a new target
+      if (currentPosition.distanceTo(target) < 1) {
+        target = new THREE.Vector3(
+          Math.random() * 10 - 5,
+          Math.random() * 6,
+          Math.random() * 10 - 5,
+        );
+      }
 
       time += 0.01;
       requestAnimationFrame(animate);
