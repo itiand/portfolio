@@ -74,9 +74,9 @@ const Butterfly = () => {
       direction.y += noise3D(time, time, 0) * 0.007;
       direction.z += noise3D(0, time, time) * 0.009;
 
-      blueButterfly.current.position.add(direction); //this instead
+      blueButterfly.current.position.add(direction);
 
-      //determine the direction
+      //determine the direction, apply the rotation
       const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
       blueButterfly.current.rotation.y = rotationY; // apply the rotation
 
@@ -91,7 +91,7 @@ const Butterfly = () => {
 
       const isInside = frustum.containsPoint(blueButterfly.current.position);
       if (!isInside) {
-        // Redirect the butterfly to a new point within the frustum or adjust its position
+        //redirect the butterfly to a new point within the frustum or adjust its position
         target = computeRandomPointWithinFrustum();
       }
 
