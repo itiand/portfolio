@@ -4,6 +4,7 @@ import { OrbitControls, Preload } from "@react-three/drei";
 import Avatar from "./AvatarMe";
 import CanvasLoader from "../Loader";
 import Butterfly from "./Butterfly";
+import * as THREE from "three";
 
 // const Computers = ({ isMobile }) => {
 //   const computer = useGLTF("./toon_cat_free/scene.gltf");
@@ -21,6 +22,13 @@ import Butterfly from "./Butterfly";
 const ComputerCanvas = () => {
   const spotLightRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
+  const [butterflyPosition, setButterflyPosition] = useState(
+    new THREE.Vector3(5, 3, 5),
+  );
+
+  useEffect(() => {
+    console.log("butterflyposition", butterflyPosition);
+  }, [butterflyPosition]);
 
   return (
     <Canvas
@@ -53,7 +61,7 @@ const ComputerCanvas = () => {
         />
         {/* <Computers /> */}
         <Avatar />
-        <Butterfly />
+        <Butterfly setButterflyPosition={setButterflyPosition} />
       </Suspense>
       <Preload all />
     </Canvas>

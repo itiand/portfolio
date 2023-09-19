@@ -4,7 +4,7 @@ import { createNoise3D } from "simplex-noise";
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 
-const Butterfly = () => {
+const Butterfly = ({ setButterflyPosition }) => {
   const { camera } = useThree();
   const blueButterfly = useRef();
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
@@ -109,11 +109,12 @@ const Butterfly = () => {
         //redirect the butterfly to a new point within the frustum or adjust its position
         target = computeRandomPointWithinFrustum();
       }
+      setButterflyPosition(blueButterfly.current.position.clone());
 
       time += 0.01;
       requestAnimationFrame(animate);
       console.log("butterflyx", blueButterfly.current.position.x);
-      console.log("targetx", target.x);
+      // console.log("targetx", target.x);
     };
 
     animate();
