@@ -27,7 +27,7 @@ const ComputerCanvas = () => {
   );
 
   // useEffect(() => {
-  //   console.log("butterflyposition", butterflyPosition);
+  //   console.log("Butterfly position in parent:", butterflyPosition);
   // }, [butterflyPosition]);
 
   return (
@@ -61,7 +61,10 @@ const ComputerCanvas = () => {
         />
         {/* <Computers /> */}
         <Avatar butterflyPosition={butterflyPosition} />
-        <Butterfly setButterflyPosition={setButterflyPosition} />
+        <Butterfly
+          setButterflyPosition={setButterflyPosition}
+          butterflyPosition={butterflyPosition}
+        />
       </Suspense>
       <Preload all />
     </Canvas>

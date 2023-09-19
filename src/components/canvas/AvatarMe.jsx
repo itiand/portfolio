@@ -2,9 +2,9 @@ import { useGLTF } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { MathUtils } from "three";
+import { useFrame } from "@react-three/fiber";
 
 const Avatar = ({ butterflyPosition }) => {
-  console.log("here", butterflyPosition);
   const { scene } = useGLTF("./readyPlayerMe.glb");
 
   //hide hands
@@ -28,16 +28,17 @@ const Avatar = ({ butterflyPosition }) => {
   //movement direction state depends on the mouse movement
   // on mouse move,  set the new direction from the origin to the mouse direction
   useEffect(() => {
-    const handleMouseMove = (event) => {
+    const handleButterflyMove = (butterflyPosition) => {
       //get new direction and normalize the value
-      const x = (event.clientX / window.innerWidth) * 2 - 1; // normalize range --> [-1,1]
-      const y = (event.clientY / window.innerHeight) * 2 - 1; // normalize range ... [-1, 1]
+      const x = (butterflyPosition.x / window.innerWidth) * 2 - 1; // normalize range --> [-1,1]
+      const y = (butterflyPosition.y / window.innerHeight) * 2 - 1; // normalize range ... [-1, 1]
       setMovementDirection(new THREE.Vector2(x, y));
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+    // window.addEventListener("mousemove", handleButterflyMove);
+    // return () => window.removeEventListener("mousemove", handleButterflyMove);
+    handleButterflyMove(butterflyPosition);
+  }, [butterflyPosition]);
   ///end head movement
   ////
 
@@ -64,7 +65,8 @@ const Avatar = ({ butterflyPosition }) => {
   ////
 
   //render effect
-  useEffect(() => {
+  useFrame(() => {
+    console.log("MOVEEE", movementDirection.y);
     const leftEye = scene.getObjectByName("LeftEye");
     const rightEye = scene.getObjectByName("RightEye");
     const head = scene.getObjectByName("Head");
@@ -74,7 +76,6 @@ const Avatar = ({ butterflyPosition }) => {
       rightEye.scale.copy(eyeScale);
     }
 
-    // console.log("HEAD ROTATION", head.rotation);
     if (head) {
       const rotationAmount = 0.3;
       head.rotation.x = movementDirection.y * rotationAmount;
@@ -94,7 +95,7 @@ const Avatar = ({ butterflyPosition }) => {
       -MAX_ROTATION_X,
       MAX_ROTATION_X,
     );
-  }, [eyeScale, movementDirection, scene]);
+  });
 
   return (
     <primitive

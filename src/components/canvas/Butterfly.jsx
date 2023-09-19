@@ -83,6 +83,8 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         10,
       );
 
+      setButterflyPosition(blueButterfly.current.position.clone());
+
       // clamp the x position, update the target
       // if butterfly reaches the x boundary, set target to opposite boundary
       if (blueButterfly.current.position.x === 10) {
@@ -90,6 +92,12 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       } else if (blueButterfly.current.position.x === 3) {
         target.x = 10;
       }
+
+      // console.log(
+      //   "Updated Butterfly Position:",
+      //   blueButterfly.current.position,
+      // );
+      // console.log("Updated Butterfly Position2:", butterflyPosition);
 
       //determine the direction, apply the rotation
       const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
@@ -109,7 +117,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         //redirect the butterfly to a new point within the frustum or adjust its position
         target = computeRandomPointWithinFrustum();
       }
-      setButterflyPosition(blueButterfly.current.position.clone());
 
       time += 0.01;
       requestAnimationFrame(animate);
