@@ -26,9 +26,9 @@ const ComputerCanvas = () => {
     new THREE.Vector3(5, 3, 5),
   );
 
-  useEffect(() => {
-    console.log("butterflyposition", butterflyPosition);
-  }, [butterflyPosition]);
+  // useEffect(() => {
+  //   console.log("butterflyposition", butterflyPosition);
+  // }, [butterflyPosition]);
 
   return (
     <Canvas
@@ -60,7 +60,7 @@ const ComputerCanvas = () => {
         // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
-        <Avatar />
+        <Avatar butterflyPosition={butterflyPosition} />
         <Butterfly setButterflyPosition={setButterflyPosition} />
       </Suspense>
       <Preload all />

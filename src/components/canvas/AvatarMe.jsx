@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { MathUtils } from "three";
 
-const Avatar = () => {
+const Avatar = ({ butterflyPosition }) => {
+  console.log("here", butterflyPosition);
   const { scene } = useGLTF("./readyPlayerMe.glb");
 
   //hide hands
