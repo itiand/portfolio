@@ -27,26 +27,6 @@ const Avatar = ({ butterflyPosition }) => {
   //   new THREE.Vector2(),
   // );
 
-  ///head direction change
-  ////
-  //movement direction state depends on butterflyposition
-  useEffect(() => {
-    const handleButterflyMove = (butterflyPosition) => {
-      //convert butterfly position to screen space coordinates
-      const projectedPosition = butterflyPosition.clone().project(camera);
-
-      const x = projectedPosition.x;
-      const y = -projectedPosition.y;
-      //get new direction and normalize the value
-      // setMovementDirection(new THREE.Vector2(x, y));
-      setTargetDirection(new THREE.Vector2(x, y));
-    };
-
-    handleButterflyMove(butterflyPosition);
-  }, [butterflyPosition, camera]);
-  ///
-  ////
-
   /////blink////
   //blink handle
   const handleBlink = () => {
@@ -69,8 +49,32 @@ const Avatar = ({ butterflyPosition }) => {
   ///end blink
   ////
 
+  ///head direction change
+  ////
+  //movement direction state depends on butterflyposition
+  useEffect(() => {
+    const handleButterflyMove = (butterflyPosition) => {
+      //convert butterfly position to screen space coordinates
+      const projectedPosition = butterflyPosition.clone().project(camera);
+
+      const x = projectedPosition.x;
+      const y = -projectedPosition.y;
+
+      //get new direction and normalize the value
+      // setMovementDirection(new THREE.Vector2(x, y));
+      setTargetDirection(new THREE.Vector2(x, y));
+    };
+
+    handleButterflyMove(butterflyPosition);
+  }, [butterflyPosition, camera]);
+  ///
+  ////
+
   //render effect
   useFrame(() => {
+    const lerpFactor = 0.05;
+    currentDirection.lerp(targetDirection, lerpFactor);
+
     const leftEye = scene.getObjectByName("LeftEye");
     const rightEye = scene.getObjectByName("RightEye");
     const head = scene.getObjectByName("Head");
@@ -82,20 +86,20 @@ const Avatar = ({ butterflyPosition }) => {
 
     if (head) {
       const rotationAmount = 0.3;
-      head.rotation.x = movementDirection.y * rotationAmount;
-      head.rotation.y = movementDirection.x * rotationAmount;
-      head.rotation.z = movementDirection.x * 0.15;
+      head.rotation.x = currentDirection.y * rotationAmount;
+      head.rotation.y = currentDirection.x * rotationAmount;
+      head.rotation.z = currentDirection.x * 0.15;
     }
 
     //body rotation
     scene.rotation.y = THREE.MathUtils.clamp(
-      movementDirection.x * 0.5 + 1.2,
+      currentDirection.x * 0.5 + 1.2,
       -MAX_ROTATION_Y,
       MAX_ROTATION_Y,
     );
 
     scene.rotation.x = THREE.MathUtils.clamp(
-      -movementDirection.y * 0.02,
+      -currentDirection.y * 0.02,
       -MAX_ROTATION_X,
       MAX_ROTATION_X,
     );
