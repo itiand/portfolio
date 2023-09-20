@@ -72,7 +72,7 @@ const Avatar = ({ butterflyPosition }) => {
 
   //render effect
   useFrame(() => {
-    const lerpFactor = 0.05;
+    const lerpFactor = 0.04;
     currentDirection.lerp(targetDirection, lerpFactor);
 
     const leftEye = scene.getObjectByName("LeftEye");
@@ -85,7 +85,7 @@ const Avatar = ({ butterflyPosition }) => {
     }
 
     if (head) {
-      const rotationAmount = 0.3;
+      const rotationAmount = 0.5;
       head.rotation.x = currentDirection.y * rotationAmount;
       head.rotation.y = currentDirection.x * rotationAmount;
       head.rotation.z = currentDirection.x * 0.15;
