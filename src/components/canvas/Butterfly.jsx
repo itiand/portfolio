@@ -80,15 +80,14 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       blueButterfly.current.position.x = THREE.MathUtils.clamp(
         blueButterfly.current.position.x,
         3,
-        10,
+        13,
       );
 
-      // clamp the x position, update the target
       // if butterfly reaches the x boundary, set target to opposite boundary
-      if (blueButterfly.current.position.x === 10) {
+      if (blueButterfly.current.position.x === 13) {
         target.x = 3;
       } else if (blueButterfly.current.position.x === 3) {
-        target.x = 10;
+        target.x = 13;
       }
 
       setButterflyPosition(blueButterfly.current.position.clone());

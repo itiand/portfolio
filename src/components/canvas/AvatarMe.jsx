@@ -37,11 +37,18 @@ const Avatar = ({ butterflyPosition }) => {
       setEyeScale(new THREE.Vector3(1, 1, 1));
     }, 50);
   };
+
   //blink useEffect --> timer
   useEffect(() => {
     const randomBlinkInterval = Math.random() * 1000 + 3000;
     const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
     window.addEventListener("click", handleBlink);
+
+    //handle smile
+    const wolfHead = scene.getObjectByName("Wolf3D_Head");
+    console.log(wolfHead.morphTargetInfluences[0]);
+    wolfHead.morphTargetInfluences[1] = 0.3;
+    wolfHead.morphTargetInfluences[0] = 0.3;
     return () => {
       clearInterval(blinkInterval);
       window.removeEventListener("click", handleBlink);
