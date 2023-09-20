@@ -2,10 +2,11 @@ import { useGLTF } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { MathUtils } from "three";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 
 const Avatar = ({ butterflyPosition }) => {
   const { scene } = useGLTF("./readyPlayerMe.glb");
+  const { camera } = useThree();
 
   //hide hands
   scene.traverse((child) => {
@@ -23,23 +24,23 @@ const Avatar = ({ butterflyPosition }) => {
   const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
   const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
 
-  ///head movement
+  ///head direction change
   ////
-  //movement direction state depends on the mouse movement
-  // on mouse move,  set the new direction from the origin to the mouse direction
+  //movement direction state depends on butterflyposition
   useEffect(() => {
     const handleButterflyMove = (butterflyPosition) => {
+      //convert butterfly position to screen space coordinates
+      const projectedPosition = butterflyPosition.clone().project(camera);
+
+      const x = projectedPosition.x;
+      const y = -projectedPosition.y;
       //get new direction and normalize the value
-      const x = (butterflyPosition.x / window.innerWidth) * 2 - 1; // normalize range --> [-1,1]
-      const y = (butterflyPosition.y / window.innerHeight) * 2 - 1; // normalize range ... [-1, 1]
       setMovementDirection(new THREE.Vector2(x, y));
     };
 
-    // window.addEventListener("mousemove", handleButterflyMove);
-    // return () => window.removeEventListener("mousemove", handleButterflyMove);
     handleButterflyMove(butterflyPosition);
-  }, [butterflyPosition]);
-  ///end head movement
+  }, [butterflyPosition, camera]);
+  ///
   ////
 
   /////blink////
@@ -66,7 +67,6 @@ const Avatar = ({ butterflyPosition }) => {
 
   //render effect
   useFrame(() => {
-    console.log("MOVEEE", movementDirection.y);
     const leftEye = scene.getObjectByName("LeftEye");
     const rightEye = scene.getObjectByName("RightEye");
     const head = scene.getObjectByName("Head");

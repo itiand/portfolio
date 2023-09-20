@@ -83,8 +83,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         10,
       );
 
-      setButterflyPosition(blueButterfly.current.position.clone());
-
       // clamp the x position, update the target
       // if butterfly reaches the x boundary, set target to opposite boundary
       if (blueButterfly.current.position.x === 10) {
@@ -92,6 +90,8 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       } else if (blueButterfly.current.position.x === 3) {
         target.x = 10;
       }
+
+      setButterflyPosition(blueButterfly.current.position.clone());
 
       // console.log(
       //   "Updated Butterfly Position:",
