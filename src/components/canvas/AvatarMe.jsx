@@ -8,6 +8,10 @@ const Avatar = ({ butterflyPosition }) => {
   const { scene } = useGLTF("./readyPlayerMe.glb");
   const { camera } = useThree();
 
+  //max body rotation
+  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
+  const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
+
   //hide hands
   scene.traverse((child) => {
     if (child.isMesh && child.name === "Wolf3D_Hands") {
@@ -16,13 +20,12 @@ const Avatar = ({ butterflyPosition }) => {
   });
 
   const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
-  const [movementDirection, setMovementDirection] = useState(
-    new THREE.Vector2(),
-  );
+  const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
+  const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
 
-  //max body rotation
-  const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
-  const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
+  // const [movementDirection, setMovementDirection] = useState(
+  //   new THREE.Vector2(),
+  // );
 
   ///head direction change
   ////
@@ -35,7 +38,8 @@ const Avatar = ({ butterflyPosition }) => {
       const x = projectedPosition.x;
       const y = -projectedPosition.y;
       //get new direction and normalize the value
-      setMovementDirection(new THREE.Vector2(x, y));
+      // setMovementDirection(new THREE.Vector2(x, y));
+      setTargetDirection(new THREE.Vector2(x, y));
     };
 
     handleButterflyMove(butterflyPosition);
