@@ -11,6 +11,7 @@ const Avatar = ({ butterflyPosition }) => {
   //max body rotation
   const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
   const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
+  const DEAD_ZONE = 0.1;
 
   //hide hands
   scene.traverse((child) => {
@@ -60,9 +61,14 @@ const Avatar = ({ butterflyPosition }) => {
       const x = projectedPosition.x;
       const y = -projectedPosition.y;
 
-      //get new direction and normalize the value
+      //get new direction and normalize the value & check if movement is beyond dead zone
       // setMovementDirection(new THREE.Vector2(x, y));
-      setTargetDirection(new THREE.Vector2(x, y));
+      if (
+        Math.abs(x - currentDirection.x) > DEAD_ZONE ||
+        Math.abs(y - currentDirection.y) > DEAD_ZONE
+      ) {
+        setTargetDirection(new THREE.Vector2(x, y));
+      }
     };
 
     handleButterflyMove(butterflyPosition);
