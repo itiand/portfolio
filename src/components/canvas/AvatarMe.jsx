@@ -11,7 +11,7 @@ const Avatar = ({ butterflyPosition }) => {
   //max body rotation
   const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
   const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
-  const DEAD_ZONE = 0.1;
+  const DEAD_ZONE = 0.01;
 
   //hide hands
   scene.traverse((child) => {
@@ -94,12 +94,12 @@ const Avatar = ({ butterflyPosition }) => {
       const rotationAmount = 0.5;
       head.rotation.x = currentDirection.y * rotationAmount;
       head.rotation.y = currentDirection.x * rotationAmount;
-      head.rotation.z = currentDirection.x * 0.15;
+      head.rotation.z = currentDirection.x * 0.25;
     }
 
     //body rotation
     scene.rotation.y = THREE.MathUtils.clamp(
-      currentDirection.x * 0.5 + 1.2,
+      currentDirection.x * 0.2 + 1.2,
       -MAX_ROTATION_Y,
       MAX_ROTATION_Y,
     );
