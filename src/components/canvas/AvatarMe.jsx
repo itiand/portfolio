@@ -1,12 +1,15 @@
 import { useGLTF } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
 import { MathUtils } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
 const Avatar = ({ butterflyPosition }) => {
-  const { scene } = useGLTF("./readyPlayerMe.glb");
+  const gltf = useGLTF("./readyPlayerMe.glb");
+  const { scene } = gltf;
   const { camera } = useThree();
+
+  const mixerRef = useRef(null);
 
   //max body rotation
   const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
@@ -31,26 +34,43 @@ const Avatar = ({ butterflyPosition }) => {
   /////blink////
   //blink handle
   const handleBlink = () => {
-    setEyeScale(new THREE.Vector3(1, 1, -0.01));
+    // setEyeScale(new THREE.Vector3(1, 1, -0.01));
+    // setTimeout(() => {
+    //   setEyeScale(new THREE.Vector3(1, 1, 1));
+    // }, 50);
 
-    setTimeout(() => {
-      setEyeScale(new THREE.Vector3(1, 1, 1));
-    }, 50);
+    if (mixerRef.current) {
+      const idleEyesAnimation = gltf.animations.find(
+        (clip) => clip.name === "idle_eyes_2",
+      );
+
+      if (idleEyesAnimation) {
+        const action = mixerRef.current.clipAction(idleEyesAnimation);
+        console.log("action", action);
+        action.play();
+      }
+    }
   };
 
   //blink useEffect --> timer
   useEffect(() => {
-    const randomBlinkInterval = Math.random() * 1000 + 3000;
-    const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
+    // const randomBlinkInterval = Math.random() * 1000 + 3000;
+    // const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
+    if (gltf && gltf.animations) {
+      mixerRef.current = new THREE.AnimationMixer(scene);
+      console.log("mixeRef.current", mixerRef.current);
+    }
+    console.log("gltf", gltf);
+
     window.addEventListener("click", handleBlink);
 
     //handle smile
     const wolfHead = scene.getObjectByName("Wolf3D_Head");
-    console.log(wolfHead.morphTargetInfluences[0]);
     wolfHead.morphTargetInfluences[1] = 0.3;
     wolfHead.morphTargetInfluences[0] = 0.3;
+
     return () => {
-      clearInterval(blinkInterval);
+      // clearInterval(blinkInterval);
       window.removeEventListener("click", handleBlink);
     };
   }, []);
