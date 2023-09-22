@@ -40,25 +40,34 @@ const Avatar = ({ butterflyPosition }) => {
     // }, 50);
 
     if (mixerRef.current) {
+      mixerRef.current.stopAllAction();
       const idleEyesAnimation = gltf.animations.find(
         (clip) => clip.name === "idle_eyes_2",
       );
 
       if (idleEyesAnimation) {
+        mixerRef.current.stopAllAction();
         const action = mixerRef.current.clipAction(idleEyesAnimation);
-        console.log("action", action);
-        action.play();
+        action.reset().play();
+        console.log("works");
+        action.loop = THREE.LoopOnce;
+        action.clampWhenFinished = true;
       }
     }
   };
 
-  //blink useEffect --> timer
+  //blink useEffect
   useEffect(() => {
     // const randomBlinkInterval = Math.random() * 1000 + 3000;
     // const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
     if (gltf && gltf.animations) {
       mixerRef.current = new THREE.AnimationMixer(scene);
-      console.log("mixeRef.current", mixerRef.current);
+
+      mixerRef.current.addEventListener("finished", (e) => {
+        if (e.action.getClip().name === "idle_eyes_2") {
+          e.action.stop();
+        }
+      });
     }
     console.log("gltf", gltf);
 
@@ -70,6 +79,13 @@ const Avatar = ({ butterflyPosition }) => {
     wolfHead.morphTargetInfluences[0] = 0.3;
 
     return () => {
+      if (mixerRef.current) {
+        mixerRef.current.removeEventListener("finished", (e) => {
+          if (e.action.getClip().name === "idle_eyes_2") {
+            e.action.stop();
+          }
+        });
+      }
       // clearInterval(blinkInterval);
       window.removeEventListener("click", handleBlink);
     };
@@ -104,7 +120,11 @@ const Avatar = ({ butterflyPosition }) => {
   ////
 
   //render effect
-  useFrame(() => {
+  useFrame((state, delta) => {
+    // if (mixerRef.current) {
+    //   mixerRef.current.update(delta);
+    // }
+
     const lerpFactor = 0.04;
     currentDirection.lerp(targetDirection, lerpFactor);
 
