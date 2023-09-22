@@ -21,6 +21,13 @@ const Avatar = ({ butterflyPosition }) => {
   const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
   const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
 
+  const [particles, setParticles] = useState([]);
+
+  const particleMaterial = new THREE.PointsMaterial({
+    size: 0.5,
+    map: new THREE.TextureLoader().load(""),
+  });
+
   //hide hands
   scene.traverse((child) => {
     if (child.isMesh && child.name === "Wolf3D_Hands") {
