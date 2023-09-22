@@ -1,17 +1,25 @@
 import { useGLTF } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
 import { MathUtils } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
 const Avatar = ({ butterflyPosition }) => {
-  const { scene } = useGLTF("./readyPlayerMe.glb");
+  const gltf = useGLTF("./readyPlayerMe.glb");
+  const { scene } = gltf;
   const { camera } = useThree();
+
+  const mixerRef = useRef(null);
 
   //max body rotation
   const MAX_ROTATION_Y = THREE.MathUtils.degToRad(90);
   const MAX_ROTATION_X = THREE.MathUtils.degToRad(10);
   const DEAD_ZONE = 0.01;
+
+  //states
+  const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
+  const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
+  const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
 
   //hide hands
   scene.traverse((child) => {
@@ -19,10 +27,6 @@ const Avatar = ({ butterflyPosition }) => {
       child.visible = false;
     }
   });
-
-  const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
-  const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
-  const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
 
   // const [movementDirection, setMovementDirection] = useState(
   //   new THREE.Vector2(),
@@ -32,23 +36,43 @@ const Avatar = ({ butterflyPosition }) => {
   //blink handle
   const handleBlink = () => {
     setEyeScale(new THREE.Vector3(1, 1, -0.01));
-
     setTimeout(() => {
       setEyeScale(new THREE.Vector3(1, 1, 1));
     }, 50);
   };
 
-  //blink useEffect --> timer
+  //blink and eye animation useEffect
   useEffect(() => {
+    //blink
     const randomBlinkInterval = Math.random() * 1000 + 3000;
     const blinkInterval = setInterval(handleBlink, randomBlinkInterval);
+
+    //eye animation
+    if (gltf && gltf.animations) {
+      //if the model has animations
+      mixerRef.current = new THREE.AnimationMixer(scene);
+
+      const idleEyesAnimation = gltf.animations.find(
+        (clip) => clip.name === "idle_eyes_2",
+      );
+
+      if (idleEyesAnimation) {
+        const action = mixerRef.current.clipAction(idleEyesAnimation);
+        console.log("action", action);
+        action.play();
+      }
+    }
+    console.log("gltf", gltf);
+    console.log("scene", scene);
+
     window.addEventListener("click", handleBlink);
 
     //handle smile
     const wolfHead = scene.getObjectByName("Wolf3D_Head");
-    console.log(wolfHead.morphTargetInfluences[0]);
     wolfHead.morphTargetInfluences[1] = 0.3;
     wolfHead.morphTargetInfluences[0] = 0.3;
+    ///
+
     return () => {
       clearInterval(blinkInterval);
       window.removeEventListener("click", handleBlink);
@@ -57,8 +81,7 @@ const Avatar = ({ butterflyPosition }) => {
   ///end blink
   ////
 
-  ///head direction change
-  ////
+  ///follow the butterfly
   //movement direction state depends on butterflyposition
   useEffect(() => {
     const handleButterflyMove = (butterflyPosition) => {
@@ -84,7 +107,11 @@ const Avatar = ({ butterflyPosition }) => {
   ////
 
   //render effect
-  useFrame(() => {
+  useFrame((state, delta) => {
+    if (mixerRef.current) {
+      mixerRef.current.update(delta);
+    }
+
     const lerpFactor = 0.04;
     currentDirection.lerp(targetDirection, lerpFactor);
 
