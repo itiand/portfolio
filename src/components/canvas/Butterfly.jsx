@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { createNoise3D } from "simplex-noise";
 import * as THREE from "three";
@@ -9,6 +9,24 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const blueButterfly = useRef();
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
+  const [manualTarget, setManualTarget] = useState(null);
+
+  //handleClickCanvas
+  //on click set new vector
+  //get boun
+  const handleClickCanvas = (event) => {
+    //get bounding client
+    const rect = event.target.getBoundingClientRect();
+    console.log("rect", rect);
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClickCanvas);
+
+    return () => {
+      window.removeEventListener("click", handleClickCanvas);
+    };
+  }, []);
 
   useEffect(() => {
     actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(3).play();
