@@ -9,7 +9,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const blueButterfly = useRef();
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
-  const [manualTarget, setManualTarget] = useState(null);
 
   //handleClickCanvas
   //on click set new vector
@@ -29,7 +28,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   }, []);
 
   useEffect(() => {
-    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(3).play();
+    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(2).play();
   }, [actions]);
 
   const noise3D = createNoise3D();
@@ -84,7 +83,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         .normalize();
 
       //slowdown and apply movement direction
-      const moveAmount = 0.02;
+      const moveAmount = 0.008;
       direction.multiplyScalar(moveAmount);
 
       // apply the noise-based movement to the direction
