@@ -24,7 +24,12 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(pointer, camera);
 
-    console.log("raycaster", raycaster);
+    console.log("raycaster", raycaster); //TEST
+
+    const plane = new THREE.Plane(
+      new THREE.Vector3(-0.5, 0, 0),
+      butterflyPosition.x,
+    );
   };
 
   useEffect(() => {
