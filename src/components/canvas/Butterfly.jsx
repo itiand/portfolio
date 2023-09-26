@@ -9,14 +9,15 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const blueButterfly = useRef();
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
+  const manualTargetRef = useRef(null);
 
-  //handleClickCanvas
-  //on click set new vector
-  //get boun
   const handleClickCanvas = (event) => {
     //get bounding client
     const rect = event.target.getBoundingClientRect();
-    console.log("rect", rect);
+
+    //normatlize
+    const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
   };
 
   useEffect(() => {
