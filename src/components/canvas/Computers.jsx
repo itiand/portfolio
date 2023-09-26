@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload } from "@react-three/drei";
+import { OrbitControls, Preload, Plane } from "@react-three/drei";
 import Avatar from "./AvatarMe";
 import CanvasLoader from "../Loader";
 import Butterfly from "./Butterfly";
@@ -65,6 +65,18 @@ const ComputerCanvas = () => {
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
         />
+        <Plane
+          position={[butterflyPosition.x, 0, 0]} // positioning the plane at the butterfly's x position
+          rotation={[0, Math.PI / 2, 0]} // rotating it so it's oriented along the x-axis (this is for the Vector3(-0.5, 0, 0) orientation)
+          args={[100, 100]} // a large size for the plane so it's easily visible
+        >
+          <meshStandardMaterial
+            attach="material"
+            opacity={0.2}
+            transparent
+            side={THREE.DoubleSide}
+          />
+        </Plane>
       </Suspense>
       <Preload all />
     </Canvas>
