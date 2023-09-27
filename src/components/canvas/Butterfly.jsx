@@ -22,15 +22,18 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     const pointer = new THREE.Vector2(x, y);
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(pointer, camera);
+    console.log("raycaster", raycaster);
 
-    const planeNormal = camera.position.clone().normalize().negate();
-    console.log("planeNormal", planeNormal);
+    //get camera position --> use it for the plane's normal
+    const planeNormal = camera.position.clone().normalize();
     const plane = new THREE.Plane(planeNormal, butterflyPosition.x);
-    console.log("plane", plane);
-    // const plane = new THREE.Plane(
-    //   new THREE.Vector3(-0.5, 0, 0),
-    //   butterflyPosition.x,
-    // );
+
+    //test if raycaster intersects the plane and store the intersection location to newTargetPosition
+    const newTargetPosition = new THREE.Vector3();
+    const intersect = raycaster.ray.intersectPlane(plane, newTargetPosition);
+    if (intersect) {
+      manualTargetRef.current = newTargetPositionargetPosition;
+    }
   };
 
   useEffect(() => {
