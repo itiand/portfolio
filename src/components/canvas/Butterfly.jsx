@@ -37,10 +37,11 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   };
 
   useEffect(() => {
-    window.addEventListener("click", handleClickCanvas);
+    const canvas = document.querySelector("canvas");
+    canvas.addEventListener("click", handleClickCanvas);
 
     return () => {
-      window.removeEventListener("click", handleClickCanvas);
+      canvas.removeEventListener("click", handleClickCanvas);
     };
   }, []);
 
@@ -49,7 +50,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   }, [actions]);
 
   const noise3D = createNoise3D();
-
   let time = 0;
 
   useEffect(() => {
