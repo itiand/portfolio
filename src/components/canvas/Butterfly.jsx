@@ -15,7 +15,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     //get bounding client
     const rect = event.target.getBoundingClientRect();
 
-    console.log("rect", rect);
     //normalize
     const x = ((event.clientX - rect.left) / rect.width) * 2 - 1; // subtract rect.left incase the canvas is offset x amount from left
     const y = -((event.clientY - rect.top) / rect.height) * 2 + 1; // subtract rect.top incase the canvas is offset y amount from top
@@ -24,12 +23,14 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(pointer, camera);
 
-    console.log("raycaster", raycaster); //TEST
-
-    const plane = new THREE.Plane(
-      new THREE.Vector3(-0.5, 0, 0),
-      butterflyPosition.x,
-    );
+    const planeNormal = camera.position.clone().normalize().negate();
+    console.log("planeNormal", planeNormal);
+    const plane = new THREE.Plane(planeNormal, butterflyPosition.x);
+    console.log("plane", plane);
+    // const plane = new THREE.Plane(
+    //   new THREE.Vector3(-0.5, 0, 0),
+    //   butterflyPosition.x,
+    // );
   };
 
   useEffect(() => {

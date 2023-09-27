@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Preload, Plane } from "@react-three/drei";
 import Avatar from "./AvatarMe";
 import CanvasLoader from "../Loader";
@@ -18,6 +18,31 @@ import * as THREE from "three";
 //     />
 //   );
 // };
+const PlaneComponent = ({ butterflyPosition }) => {
+  const { camera, scene } = useThree();
+  const planeRef = useRef();
+
+  useEffect(() => {
+    if (planeRef.current && camera) {
+      planeRef.current.lookAt(camera.position);
+    }
+  }, [camera.position]);
+
+  return (
+    <Plane
+      ref={planeRef}
+      position={[butterflyPosition.x, 0, 0]}
+      args={[100, 100]}
+    >
+      <meshStandardMaterial
+        attach="material"
+        opacity={0.2}
+        transparent
+        side={THREE.DoubleSide}
+      />
+    </Plane>
+  );
+};
 
 const ComputerCanvas = () => {
   const spotLightRef = useRef();
@@ -25,7 +50,6 @@ const ComputerCanvas = () => {
   const [butterflyPosition, setButterflyPosition] = useState(
     new THREE.Vector3(5, 3, 5),
   );
-
   // useEffect(() => {
   //   console.log("Butterfly position in parent:", butterflyPosition);
   // }, [butterflyPosition]);
@@ -65,18 +89,7 @@ const ComputerCanvas = () => {
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
         />
-        <Plane
-          position={[butterflyPosition.x, 0, 0]} // positioning the plane at the butterfly's x position
-          rotation={[0, Math.PI / 2, 0]} // rotating it so it's oriented along the x-axis (this is for the Vector3(-0.5, 0, 0) orientation)
-          args={[100, 100]} // a large size for the plane so it's easily visible
-        >
-          <meshStandardMaterial
-            attach="material"
-            opacity={0.2}
-            transparent
-            side={THREE.DoubleSide}
-          />
-        </Plane>
+        <PlaneComponent butterflyPosition={butterflyPosition} />
       </Suspense>
       <Preload all />
     </Canvas>
