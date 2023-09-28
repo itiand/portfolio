@@ -11,7 +11,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
 
-  const handleClickCanvas = (event) => {
+  const handleCanvasClick = (event) => {
     //get bounding client
     const rect = event.target.getBoundingClientRect();
 
@@ -25,23 +25,23 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     console.log("raycaster", raycaster);
 
     //get camera position --> use it for the plane's normal
-    const planeNormal = camera.position.clone().normalize();
+    const planeNormal = camera.position.clone().normalize().negate();
     const plane = new THREE.Plane(planeNormal, butterflyPosition.x);
 
     //test if raycaster intersects the plane and store the intersection location to newTargetPosition
     const newTargetPosition = new THREE.Vector3();
     const intersect = raycaster.ray.intersectPlane(plane, newTargetPosition);
     if (intersect) {
-      manualTargetRef.current = newTargetPositionargetPosition;
+      manualTargetRef.current = newTargetPosition;
     }
   };
 
   useEffect(() => {
     const canvas = document.querySelector("canvas");
-    canvas.addEventListener("click", handleClickCanvas);
+    canvas.addEventListener("click", handleCanvasClick);
 
     return () => {
-      canvas.removeEventListener("click", handleClickCanvas);
+      canvas.removeEventListener("click", handleCanvasClick);
     };
   }, []);
 
@@ -67,7 +67,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       randomDirection.multiplyScalar(randomDistance);
 
       return camera.position.clone().add(randomDirection);
-    }
+    } // outside?
 
     const frustum = new THREE.Frustum();
     const cameraViewProjectionMatrix = new THREE.Matrix4();
@@ -81,8 +81,8 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     );
     frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
-    //IMPLEMENTING SENSE OF DIRECTION
-    //initial target
+    //IMPLEMENTING BUTTERFLY SENSE OF DIRECTION
+    //initial random target
     let target = new THREE.Vector3(
       Math.random() * 7 + 3,
       Math.random() * 6,
@@ -93,6 +93,18 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       const currentPosition = new THREE.Vector3().copy(
         blueButterfly.current.position,
       );
+
+      //if an area is clicked
+      if (manualTargetRef.current) {
+        //clicked area becomes the target
+        target = manualTargetRef.current;
+
+        //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
+        if (currentPosition.distanceTo(target) < 1) {
+          console.log("nulled");
+          manualTargetRef.current = null;
+        }
+      }
 
       //compute direction to the target from current position
       const direction = new THREE.Vector3()
@@ -126,12 +138,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       setButterflyPosition(blueButterfly.current.position.clone());
 
-      // console.log(
-      //   "Updated Butterfly Position:",
-      //   blueButterfly.current.position,
-      // );
-      // console.log("Updated Butterfly Position2:", butterflyPosition);
-
+      //ROTATION
       //determine the direction, apply the rotation
       const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
       blueButterfly.current.rotation.y = rotationY; // apply the rotation
@@ -153,26 +160,27 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       time += 0.01;
       requestAnimationFrame(animate);
-      // console.log(
-      //   "butterflyx",
-      //   blueButterfly.current.position.x,
-      //   "state",
-      //   butterflyPosition,
-      // );
-      // console.log("targetx", target.x);
     };
 
     animate();
   }, []);
 
   return (
-    <primitive
-      object={scene}
-      ref={blueButterfly}
-      position={[5, 3, 5]}
-      rotation={[0.2, 3, 0]}
-      scale={0.2}
-    />
+    <>
+      <primitive
+        object={scene}
+        ref={blueButterfly}
+        position={[5, 3, 5]}
+        rotation={[0.2, 3, 0]}
+        scale={0.2}
+      />
+      {manualTargetRef.current && (
+        <mesh position={manualTargetRef.current}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial color="red" />
+        </mesh>
+      )}
+    </>
   );
 };
 
