@@ -89,7 +89,7 @@ const ComputerCanvas = () => {
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
         />
-        <PlaneComponent butterflyPosition={butterflyPosition} />
+        {/* <PlaneComponent butterflyPosition={butterflyPosition} /> */}
       </Suspense>
       <Preload all />
     </Canvas>

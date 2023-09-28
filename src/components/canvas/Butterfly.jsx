@@ -11,6 +11,11 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
 
+  //start flapping
+  useEffect(() => {
+    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(2).play();
+  }, [actions]);
+
   const handleCanvasClick = (event) => {
     //get bounding client
     const rect = event.target.getBoundingClientRect();
@@ -22,7 +27,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     const pointer = new THREE.Vector2(x, y);
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(pointer, camera);
-    console.log("raycaster", raycaster);
 
     //get camera position --> use it for the plane's normal
     const planeNormal = camera.position.clone().normalize().negate();
@@ -44,10 +48,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       canvas.removeEventListener("click", handleCanvasClick);
     };
   }, []);
-
-  useEffect(() => {
-    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(2).play();
-  }, [actions]);
 
   const noise3D = createNoise3D();
   let time = 0;
@@ -112,7 +112,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         .normalize();
 
       //slowdown and apply movement direction
-      const moveAmount = 0.008;
+      const moveAmount = 0.02;
       direction.multiplyScalar(moveAmount);
 
       // apply the noise-based movement to the direction
