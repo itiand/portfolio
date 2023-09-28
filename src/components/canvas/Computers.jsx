@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload } from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
+import { OrbitControls, Preload, Plane } from "@react-three/drei";
 import Avatar from "./AvatarMe";
 import CanvasLoader from "../Loader";
 import Butterfly from "./Butterfly";
@@ -18,6 +18,31 @@ import * as THREE from "three";
 //     />
 //   );
 // };
+const PlaneComponent = ({ butterflyPosition }) => {
+  const { camera, scene } = useThree();
+  const planeRef = useRef();
+
+  useEffect(() => {
+    if (planeRef.current && camera) {
+      planeRef.current.lookAt(camera.position);
+    }
+  }, [camera.position]);
+
+  return (
+    <Plane
+      ref={planeRef}
+      position={[butterflyPosition.x, 0, 0]}
+      args={[100, 100]}
+    >
+      <meshStandardMaterial
+        attach="material"
+        opacity={0.2}
+        transparent
+        side={THREE.DoubleSide}
+      />
+    </Plane>
+  );
+};
 
 const ComputerCanvas = () => {
   const spotLightRef = useRef();
@@ -25,7 +50,6 @@ const ComputerCanvas = () => {
   const [butterflyPosition, setButterflyPosition] = useState(
     new THREE.Vector3(5, 3, 5),
   );
-
   // useEffect(() => {
   //   console.log("Butterfly position in parent:", butterflyPosition);
   // }, [butterflyPosition]);
@@ -40,7 +64,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      {/* <axesHelper args={[5]} /> */}
+      <axesHelper args={[5]} />
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
@@ -65,6 +89,7 @@ const ComputerCanvas = () => {
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
         />
+        {/* <PlaneComponent butterflyPosition={butterflyPosition} /> */}
       </Suspense>
       <Preload all />
     </Canvas>
