@@ -10,6 +10,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
+  const [floatingStartTime, setFloatingStartTime] = useState(null);
 
   //start flapping
   useEffect(() => {
@@ -35,8 +36,10 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     //test if raycaster intersects the plane and store the intersection location to newTargetPosition
     const newTargetPosition = new THREE.Vector3();
     const intersect = raycaster.ray.intersectPlane(plane, newTargetPosition);
+
     if (intersect) {
       manualTargetRef.current = newTargetPosition;
+      setFloatingStartTime(null);
     }
   };
 
@@ -96,8 +99,20 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       //if an area is clicked
       if (manualTargetRef.current) {
+        ///???floating timer NULL? (is the butterfly already there and floating?-
+        ///
+        //////YESS start the floating timer, start floating
+
+        //////ELSE NO (floating timer already exists)
+        ///////////???: floating timer more than 5 seconds?
+        //////////////YES -->floating timer null
+        //////////////YES -->set manualTargetRef to null
+        //////////////YES --?FIND A NEW TARGET --> END
+        //////////////AlREADY FLOATING
+        //////////////NO (already floating)-->float and move around the spot,--. setfloating timer
+
         //clicked area becomes the target
-        target = manualTargetRef.current;
+        target = manualTargetRef.current; // END
 
         //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
         if (currentPosition.distanceTo(target) < 1) {
