@@ -99,19 +99,23 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       //if an area is clicked
       if (manualTargetRef.current) {
-        ///???floating timer NULL? (is the butterfly already there and floating?-
-        ///
-        //////YESS start the floating timer, start floating
+        // if (already on the target) {
+        //   if( ! nno timer yet) {
+        //     startFloating timer
+        //   }
 
-        //////ELSE NO (floating timer already exists)
-        ///////////???: floating timer more than 5 seconds?
-        //////////////YES -->floating timer null
-        //////////////YES -->set manualTargetRef to null
-        //////////////YES --?FIND A NEW TARGET --> END
-        //////////////AlREADY FLOATING
-        //////////////NO (already floating)-->float and move around the spot,--. setfloating timer
+        //   if( floating timer is already beyond 5 seconds) {
+        //     New target
+        //     setManualTargetRef to null
+        //     set floatingtime to null
+        //     find a new random target
+        //   } else {
+        //     stay on the spot and float ariubd
+        //   }
+        // } else {
+        //   //target = marnualTargetRef.current; // keep the target and let it keep flying there
+        // }
 
-        //clicked area becomes the target
         target = manualTargetRef.current; // END
 
         //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
