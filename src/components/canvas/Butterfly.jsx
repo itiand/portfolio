@@ -109,7 +109,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
             console.log("SETTING THE TIME", floatingStartTimeRef.current);
           }
 
-          if (Date.now() - floatingStartTimeRef.current >= 10000) {
+          if (Date.now() - floatingStartTimeRef.current >= 4000) {
             console.log("floattime done", floatingStartTimeRef.current);
             manualTargetRef.current = null; //setManualTargetRef to null
 
@@ -173,7 +173,10 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       //ROTATION
       //determine the direction, apply the rotation
-      if (!manualTargetRef.current) {
+      if (
+        !manualTargetRef.current ||
+        currentPosition.distanceTo(manualTargetRef.current) > 0.1
+      ) {
         const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
         blueButterfly.current.rotation.y = rotationY; // apply the rotation
       }
