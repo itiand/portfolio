@@ -197,7 +197,10 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       }
 
       time += 0.01;
-      requestAnimationFrame(animate);
+      const animationId = requestAnimationFrame(animate);
+      return () => {
+        cancelAnimationFrame(animationId);
+      };
     };
 
     animate();
