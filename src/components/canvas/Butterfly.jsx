@@ -93,42 +93,50 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     );
 
     const animate = () => {
+      let direction = new THREE.Vector3();
       const currentPosition = new THREE.Vector3().copy(
         blueButterfly.current.position,
       );
 
       //if an area is clicked
       if (manualTargetRef.current) {
-        // if (already on the target) {
-        //   if( ! nno timer yet) {
-        //     startFloating timer
-        //   }
+        //if the butterfly is already on the manual target
+        if (currentPosition.distanceTo(manualTargetRef.current) < 0.1) {
+          if (!floatingStartTime) {
+            setFloatingStartTime(Date.now());
+          }
 
-        //   if( floating timer is already beyond 5 seconds) {
-        //     New target
-        //     setManualTargetRef to null
-        //     set floatingtime to null
-        //     find a new random target
-        //   } else {
-        //     stay on the spot and float ariubd
-        //   }
-        // } else {
-        //   //target = marnualTargetRef.current; // keep the target and let it keep flying there
-        // }
-
-        target = manualTargetRef.current; // END
-
-        //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
-        if (currentPosition.distanceTo(target) < 1) {
-          console.log("nulled");
-          manualTargetRef.current = null;
+          if (Date.now() - floatingStartTime >= 10000) {
+            manualTargetRef.current = null; //setManualTargetRef to null
+            setFloatingStartTime(null); //set floatingtime to null
+            target = computeRandomPointWithinFrustum(); // find a new random target
+          } else {
+            //stay on the spot and float around
+            const floatRadius = 0.05;
+            direction.add(
+              new THREE.Vector3(
+                (Math.random() - 0.5) * floatRadius,
+                (Math.random() - 0.5) * floatRadius,
+                (Math.random() - 0.5) * floatRadius,
+              ),
+            );
+          }
+        } else {
+          // keep the target and let it keep flying there
+          target = manualTargetRef.current;
         }
+
+        //////////////
+        // target = manualTargetRef.current; // END
+        // //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
+        // if (currentPosition.distanceTo(target) < 1) {
+        //   console.log("nulled");
+        //   manualTargetRef.current = null;
+        // }
       }
 
       //compute direction to the target from current position
-      const direction = new THREE.Vector3()
-        .subVectors(target, currentPosition)
-        .normalize();
+      direction.subVectors(target, currentPosition).normalize();
 
       //slowdown and apply movement direction
       const moveAmount = 0.02;
