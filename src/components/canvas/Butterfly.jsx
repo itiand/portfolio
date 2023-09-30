@@ -11,6 +11,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
   const [floatingStartTime, setFloatingStartTime] = useState(null);
+  const floatingStartTimeRef = useRef(null);
 
   //start flapping
   useEffect(() => {
@@ -39,7 +40,8 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
     if (intersect) {
       manualTargetRef.current = newTargetPosition;
-      setFloatingStartTime(null);
+      // setFloatingStartTime(null);
+      floatingStartTimeRef.current = null;
     }
   };
 
@@ -102,15 +104,19 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       if (manualTargetRef.current) {
         //if the butterfly is already on the manual target
         if (currentPosition.distanceTo(manualTargetRef.current) < 0.1) {
-          if (!floatingStartTime) {
-            setFloatingStartTime(Date.now());
+          if (!floatingStartTimeRef.current) {
+            floatingStartTimeRef.current = Date.now();
+            console.log("SETTING THE TIME", floatingStartTimeRef.current);
           }
 
-          if (Date.now() - floatingStartTime >= 10000) {
+          if (Date.now() - floatingStartTimeRef.current >= 10000) {
+            console.log("floattime done", floatingStartTimeRef.current);
             manualTargetRef.current = null; //setManualTargetRef to null
-            setFloatingStartTime(null); //set floatingtime to null
+
+            floatingStartTimeRef.current = null;
             target = computeRandomPointWithinFrustum(); // find a new random target
           } else {
+            console.log("floating time exists", floatingStartTimeRef.current);
             //stay on the spot and float around
             const floatRadius = 0.05;
             direction.add(
@@ -167,8 +173,10 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       //ROTATION
       //determine the direction, apply the rotation
-      const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
-      blueButterfly.current.rotation.y = rotationY; // apply the rotation
+      if (!manualTargetRef.current) {
+        const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
+        blueButterfly.current.rotation.y = rotationY; // apply the rotation
+      }
 
       //change butterfly direction when it is near its target
       if (currentPosition.distanceTo(target) < 1) {
