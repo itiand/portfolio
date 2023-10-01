@@ -10,7 +10,6 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
-  const [floatingStartTime, setFloatingStartTime] = useState(null);
   const floatingStartTimeRef = useRef(null);
 
   //start flapping
@@ -88,12 +87,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
     //IMPLEMENTING BUTTERFLY SENSE OF DIRECTION
     //initial random target
-    let target = new THREE.Vector3(
-      Math.random() * 7 + 3,
-      Math.random() * 6,
-      Math.random() * 10 - 5,
-    );
-
+    let target = computeRandomPointWithinFrustum();
     const animate = () => {
       let direction = new THREE.Vector3();
       const currentPosition = new THREE.Vector3().copy(
@@ -109,7 +103,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
             console.log("SETTING THE TIME", floatingStartTimeRef.current);
           }
 
-          if (Date.now() - floatingStartTimeRef.current >= 4000) {
+          if (Date.now() - floatingStartTimeRef.current >= 3000) {
             console.log("floattime done", floatingStartTimeRef.current);
             manualTargetRef.current = null; //setManualTargetRef to null
 
@@ -183,11 +177,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       //change butterfly direction when it is near its target
       if (currentPosition.distanceTo(target) < 1) {
-        target = new THREE.Vector3(
-          Math.random() * 7 + 3,
-          Math.random() * 6,
-          Math.random() * 10 - 5,
-        );
+        target = computeRandomPointWithinFrustum();
       }
 
       const isInside = frustum.containsPoint(blueButterfly.current.position);
@@ -215,12 +205,12 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         rotation={[0.2, 3, 0]}
         scale={0.2}
       />
-      {manualTargetRef.current && (
+      {/* {manualTargetRef.current && (
         <mesh position={manualTargetRef.current}>
           <sphereGeometry args={[0.1, 32, 32]} />
           <meshStandardMaterial color="red" />
         </mesh>
-      )}
+      )} */}
     </>
   );
 };
