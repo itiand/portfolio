@@ -14,7 +14,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
   //start flapping
   useEffect(() => {
-    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(2).play();
+    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(1.8).play();
   }, [actions]);
 
   const handleCanvasClick = (event) => {
@@ -113,11 +113,13 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
             console.log("floating time exists", floatingStartTimeRef.current);
             //stay on the spot and float around
             const floatRadius = 0.05;
+            const elapsedTime =
+              (Date.now() - floatingStartTimeRef.current) / 1000; // Time in seconds since floating started
             direction.add(
               new THREE.Vector3(
-                (Math.random() - 0.5) * floatRadius,
-                (Math.random() - 0.5) * floatRadius,
-                (Math.random() - 0.5) * floatRadius,
+                Math.sin(elapsedTime) * floatRadius,
+                Math.sin(elapsedTime * 1.2) * floatRadius,
+                Math.cos(elapsedTime) * floatRadius,
               ),
             );
           }
