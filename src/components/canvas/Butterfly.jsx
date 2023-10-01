@@ -10,10 +10,11 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
+  const floatingStartTimeRef = useRef(null);
 
   //start flapping
   useEffect(() => {
-    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(2).play();
+    actions["Flying"].reset().fadeIn(0.5).setEffectiveTimeScale(1.8).play();
   }, [actions]);
 
   const handleCanvasClick = (event) => {
@@ -35,8 +36,11 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
     //test if raycaster intersects the plane and store the intersection location to newTargetPosition
     const newTargetPosition = new THREE.Vector3();
     const intersect = raycaster.ray.intersectPlane(plane, newTargetPosition);
+
     if (intersect) {
       manualTargetRef.current = newTargetPosition;
+      // setFloatingStartTime(null);
+      floatingStartTimeRef.current = null;
     }
   };
 
@@ -83,33 +87,58 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
     //IMPLEMENTING BUTTERFLY SENSE OF DIRECTION
     //initial random target
-    let target = new THREE.Vector3(
-      Math.random() * 7 + 3,
-      Math.random() * 6,
-      Math.random() * 10 - 5,
-    );
-
+    let target = computeRandomPointWithinFrustum();
     const animate = () => {
+      let direction = new THREE.Vector3();
       const currentPosition = new THREE.Vector3().copy(
         blueButterfly.current.position,
       );
 
       //if an area is clicked
       if (manualTargetRef.current) {
-        //clicked area becomes the target
-        target = manualTargetRef.current;
+        //if the butterfly is already on the manual target
+        if (currentPosition.distanceTo(manualTargetRef.current) < 0.1) {
+          if (!floatingStartTimeRef.current) {
+            floatingStartTimeRef.current = Date.now();
+            console.log("SETTING THE TIME", floatingStartTimeRef.current);
+          }
 
-        //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
-        if (currentPosition.distanceTo(target) < 1) {
-          console.log("nulled");
-          manualTargetRef.current = null;
+          if (Date.now() - floatingStartTimeRef.current >= 3000) {
+            console.log("floattime done", floatingStartTimeRef.current);
+            manualTargetRef.current = null; //setManualTargetRef to null
+
+            floatingStartTimeRef.current = null;
+            target = computeRandomPointWithinFrustum(); // find a new random target
+          } else {
+            console.log("floating time exists", floatingStartTimeRef.current);
+            //stay on the spot and float around
+            const floatRadius = 0.05;
+            const elapsedTime =
+              (Date.now() - floatingStartTimeRef.current) / 1000; // Time in seconds since floating started
+            direction.add(
+              new THREE.Vector3(
+                Math.sin(elapsedTime) * floatRadius,
+                Math.sin(elapsedTime * 1.2) * floatRadius,
+                Math.cos(elapsedTime) * floatRadius,
+              ),
+            );
+          }
+        } else {
+          // keep the target and let it keep flying there
+          target = manualTargetRef.current;
         }
+
+        //////////////
+        // target = manualTargetRef.current; // END
+        // //and if the current butterfly position is getting closer and beyond threshold, clear manualTargetRef
+        // if (currentPosition.distanceTo(target) < 1) {
+        //   console.log("nulled");
+        //   manualTargetRef.current = null;
+        // }
       }
 
       //compute direction to the target from current position
-      const direction = new THREE.Vector3()
-        .subVectors(target, currentPosition)
-        .normalize();
+      direction.subVectors(target, currentPosition).normalize();
 
       //slowdown and apply movement direction
       const moveAmount = 0.02;
@@ -140,16 +169,17 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
       //ROTATION
       //determine the direction, apply the rotation
-      const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
-      blueButterfly.current.rotation.y = rotationY; // apply the rotation
+      if (
+        !manualTargetRef.current ||
+        currentPosition.distanceTo(manualTargetRef.current) > 0.1
+      ) {
+        const rotationY = Math.atan2(direction.z, direction.x) - Math.PI / 2; //calculate the roatation
+        blueButterfly.current.rotation.y = rotationY; // apply the rotation
+      }
 
       //change butterfly direction when it is near its target
       if (currentPosition.distanceTo(target) < 1) {
-        target = new THREE.Vector3(
-          Math.random() * 7 + 3,
-          Math.random() * 6,
-          Math.random() * 10 - 5,
-        );
+        target = computeRandomPointWithinFrustum();
       }
 
       const isInside = frustum.containsPoint(blueButterfly.current.position);
@@ -159,7 +189,10 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
       }
 
       time += 0.01;
-      requestAnimationFrame(animate);
+      const animationId = requestAnimationFrame(animate);
+      return () => {
+        cancelAnimationFrame(animationId);
+      };
     };
 
     animate();
@@ -174,12 +207,12 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
         rotation={[0.2, 3, 0]}
         scale={0.2}
       />
-      {manualTargetRef.current && (
+      {/* {manualTargetRef.current && (
         <mesh position={manualTargetRef.current}>
           <sphereGeometry args={[0.1, 32, 32]} />
           <meshStandardMaterial color="red" />
         </mesh>
-      )}
+      )} */}
     </>
   );
 };
