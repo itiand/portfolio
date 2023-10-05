@@ -7,7 +7,8 @@ import { useThree } from "@react-three/fiber";
 const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
   const { camera } = useThree();
   const blueButterfly = useRef();
-  const { animations, nodes, scene } = useGLTF("./blue_butterfly/scene.gltf");
+  const butterfly = useGLTF("./blue_butterfly/scene.gltf");
+  const { animations, nodes, scene } = butterfly;
   const { actions, names } = useAnimations(animations, blueButterfly);
   const manualTargetRef = useRef(null);
   const floatingStartTimeRef = useRef(null);
@@ -75,6 +76,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition }) => {
 
     const frustum = new THREE.Frustum();
     const cameraViewProjectionMatrix = new THREE.Matrix4();
+    butterfly.materials.Wings.color.set(1, 0, 12);
 
     // Every frame or whenever the camera or viewport changes
     camera.updateMatrixWorld(); // make sure the camera matrix is updated
