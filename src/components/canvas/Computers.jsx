@@ -50,6 +50,8 @@ const ComputerCanvas = () => {
   const [butterflyPosition, setButterflyPosition] = useState(
     new THREE.Vector3(5, 3, 5),
   );
+
+  const OFFSET_X = -3.5;
   // useEffect(() => {
   //   console.log("Butterfly position in parent:", butterflyPosition);
   // }, [butterflyPosition]);
@@ -64,7 +66,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      {/* <axesHelper args={[5]} /> */}
+      <axesHelper args={[5]} />
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
@@ -84,10 +86,11 @@ const ComputerCanvas = () => {
         // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
-        <Avatar butterflyPosition={butterflyPosition} />
+        <Avatar butterflyPosition={butterflyPosition} offsetX={OFFSET_X} />
         <Butterfly
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
+          offsetX={OFFSET_X}
         />
         {/* <PlaneComponent butterflyPosition={butterflyPosition} /> */}
       </Suspense>
