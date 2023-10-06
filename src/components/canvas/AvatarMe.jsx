@@ -148,7 +148,7 @@ const Avatar = ({ butterflyPosition, offsetX }) => {
   return (
     <primitive
       object={scene}
-      position={[0, -10.5, -3.5]}
+      position={[0, -10.5, 0 + offsetX]}
       rotation={[0, 1.2, 0]}
       scale={17}
     />

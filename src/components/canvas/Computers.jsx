@@ -45,13 +45,13 @@ const PlaneComponent = ({ butterflyPosition }) => {
 };
 
 const ComputerCanvas = () => {
+  const OFFSET_X = -3.5;
   const spotLightRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
   const [butterflyPosition, setButterflyPosition] = useState(
     new THREE.Vector3(5, 3, 5),
   );
 
-  const OFFSET_X = -3.5;
   // useEffect(() => {
   //   console.log("Butterfly position in parent:", butterflyPosition);
   // }, [butterflyPosition]);
