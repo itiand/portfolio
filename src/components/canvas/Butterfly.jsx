@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 
 const Butterfly = ({ setButterflyPosition, butterflyPosition, offsetX }) => {
-  butterflyPosition.z -= offsetX;
+  // butterflyPosition.z -= offsetX;
   const { camera } = useThree();
   const blueButterfly = useRef();
   const butterfly = useGLTF("./blue_butterfly/scene.gltf");
