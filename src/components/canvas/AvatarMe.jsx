@@ -128,7 +128,7 @@ const Avatar = ({ butterflyPosition, offsetX }) => {
       const rotationAmount = 0.3;
       head.rotation.x = currentDirection.y * rotationAmount;
       head.rotation.y = currentDirection.x * rotationAmount;
-      head.rotation.z = currentDirection.x * 0.2;
+      head.rotation.z = currentDirection.x * 0.13;
     }
 
     //body rotation
