@@ -61,7 +61,7 @@ const ComputerCanvas = () => {
       frameloop="always"
       shadows
       camera={{
-        position: [20, 3, 5],
+        position: [20, 3, 5 + OFFSET_X],
         fov: 25,
       }}
       gl={{ preserveDrawingBuffer: true }}
