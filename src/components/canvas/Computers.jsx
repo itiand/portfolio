@@ -18,6 +18,7 @@ import * as THREE from "three";
 //     />
 //   );
 // };
+
 const PlaneComponent = ({ butterflyPosition }) => {
   const { camera, scene } = useThree();
   const planeRef = useRef();
@@ -62,7 +63,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
