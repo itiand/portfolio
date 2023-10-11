@@ -45,6 +45,20 @@ const PlaneComponent = ({ butterflyPosition }) => {
   );
 };
 
+const FovAdjust = () => {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    function handleResize() {
+      const width = window.innerWidth;
+      console.log("current width:", width);
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, [camera]);
+};
+
 const ComputerCanvas = () => {
   const OFFSET_X = -3.5;
   const spotLightRef = useRef();
@@ -83,6 +97,7 @@ const ComputerCanvas = () => {
         // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
+        <FovAdjust />
         <Avatar butterflyPosition={butterflyPosition} offsetX={OFFSET_X} />
         <Butterfly
           setButterflyPosition={setButterflyPosition}
