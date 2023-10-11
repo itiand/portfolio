@@ -52,16 +52,12 @@ const ComputerCanvas = () => {
     new THREE.Vector3(5, 3, 5),
   );
 
-  // useEffect(() => {
-  //   console.log("Butterfly position in parent:", butterflyPosition);
-  // }, [butterflyPosition]);
-
   return (
     <Canvas
       frameloop="always"
       shadows
       camera={{
-        position: [20, 3, 5 + OFFSET_X],
+        position: [20, 3, 5],
         fov: 25,
       }}
       gl={{ preserveDrawingBuffer: true }}
