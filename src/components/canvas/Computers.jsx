@@ -21,6 +21,13 @@ import PlaneComponent from "./Plane";
 //   );
 // };
 
+//TAIWIND BREAKPOINTS
+// sm: 640px
+// md: 768px
+// lg: 1024px
+// xl: 1280px
+// 2xl: 1536px
+
 const FovAdjust = () => {
   const { camera } = useThree();
 
@@ -28,11 +35,27 @@ const FovAdjust = () => {
     function handleResize() {
       const width = window.innerWidth;
       console.log("current width:", width);
+      if (width < 768) {
+        console.log("ZOOMED OUT");
+        camera.fov = 37;
+      }
     }
+
+    function logCameraPosition() {
+      console.log("Camera Position:", camera.position);
+    }
+
+    camera.addEventListener("change", logCameraPosition);
     window.addEventListener("resize", handleResize);
     handleResize();
-    return () => window.removeEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      camera.removeEventListener("change", logCameraPosition);
+    };
   }, [camera]);
+
+  return null;
 };
 
 const ComputerCanvas = () => {
