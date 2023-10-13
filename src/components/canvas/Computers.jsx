@@ -39,13 +39,16 @@ const FovAdjust = () => {
         camera.fov = 25;
         console.log("BIGGEST", camera.fov);
       } else if (width > 1024) {
-        camera.fov = 28;
-        console.log(camera.fov);
+        camera.fov = 30;
+        console.log("lg", camera.fov);
       } else if (width > 768) {
         camera.fov = 35;
-        console.log(camera.fov);
-      } else {
+        console.log("md", camera.fov);
+      } else if (width > 640) {
         camera.fov = 40;
+        console.log("sm", camera.fov);
+      } else {
+        camera.fov = 45;
         console.log("smallest", camera.fov);
       }
     }
