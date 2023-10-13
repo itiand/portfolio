@@ -35,9 +35,18 @@ const FovAdjust = () => {
     function handleResize() {
       const width = window.innerWidth;
       console.log("current width:", width);
-      if (width < 768) {
-        console.log("ZOOMED OUT");
-        camera.fov = 37;
+      if (width > 1280) {
+        camera.fov = 25;
+        console.log("BIGGEST", camera.fov);
+      } else if (width > 1024) {
+        camera.fov = 28;
+        console.log(camera.fov);
+      } else if (width > 768) {
+        camera.fov = 35;
+        console.log(camera.fov);
+      } else {
+        camera.fov = 40;
+        console.log("smallest", camera.fov);
       }
     }
 
