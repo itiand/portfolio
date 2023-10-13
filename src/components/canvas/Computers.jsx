@@ -28,7 +28,7 @@ import PlaneComponent from "./Plane";
 // xl: 1280px
 // 2xl: 1536px
 
-const FovAdjust = () => {
+const FovAdjust = ({ controlsRef }) => {
   const { camera } = useThree();
 
   useEffect(() => {
@@ -53,9 +53,14 @@ const FovAdjust = () => {
       }
     }
 
+    ////LOG CAMERA POSITION
     function logCameraPosition() {
       console.log("Camera Position:", camera.position);
     }
+    if (controlsRef.current) {
+      controlsRef.current.addEventListener("change", logCameraPosition);
+    }
+    //////
 
     camera.addEventListener("change", logCameraPosition);
     window.addEventListener("resize", handleResize);
@@ -65,7 +70,7 @@ const FovAdjust = () => {
       window.removeEventListener("resize", handleResize);
       camera.removeEventListener("change", logCameraPosition);
     };
-  }, [camera]);
+  }, [camera, controlsRef]);
 
   return null;
 };
@@ -78,6 +83,7 @@ const ComputerCanvas = () => {
     new THREE.Vector3(5, 3, 5),
   );
 
+  const controlsRef = useRef();
   return (
     <Canvas
       frameloop="always"
@@ -102,13 +108,14 @@ const ComputerCanvas = () => {
 
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-        // autoRotate
-        // enableZoom={false}
-        // maxPolarAngle={Math.PI / 2}
-        // minPolarAngle={Math.PI / 2}
+          ref={controlsRef}
+          // autoRotate
+          // enableZoom={false}
+          // maxPolarAngle={Math.PI / 2}
+          // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
-        <FovAdjust />
+        <FovAdjust controlsRef={controlsRef} />
         <Avatar butterflyPosition={butterflyPosition} offsetX={OFFSET_X} />
         <Butterfly
           setButterflyPosition={setButterflyPosition}
