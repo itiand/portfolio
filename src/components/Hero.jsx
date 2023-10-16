@@ -21,11 +21,14 @@ const Hero = () => {
           <div className="violet-gradient h-40 w-1 sm:h-80" />
         </div>
         {/* mt-28 */}
-        <div className="">
-          <h1 className={`${styles.heroHeadText} text-white`}>
-            Hi, I'm <span className="text-[#915EFF]">Christian</span>
+        <div className="text-[110px]">
+          <h1 className={`${styles.heroHeadText} leading-tight text-white`}>
+            Hi, I'm <br></br>
+            <span className="text-[#915EFF]">Christian</span>
           </h1>
-          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
+          <p
+            className={`${styles.heroSubText} mt-2 leading-tight text-white-100`}
+          >
             I develop user interfaces
             <br className="hidden sm:block" /> and web applications
           </p>

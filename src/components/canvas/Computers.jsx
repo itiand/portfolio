@@ -33,7 +33,7 @@ const FovAdjust = ({ controlsRef }) => {
 
   useEffect(() => {
     const defaultPOV = 25;
-    const POVincrement = 3;
+    const POVincrement = 2.5;
     function handleResize() {
       const width = window.innerWidth;
       console.log("current width:", width);
