@@ -32,23 +32,25 @@ const FovAdjust = ({ controlsRef }) => {
   const { camera } = useThree();
 
   useEffect(() => {
+    const defaultPOV = 25;
+    const POVincrement = 3;
     function handleResize() {
       const width = window.innerWidth;
       console.log("current width:", width);
       if (width > 1280) {
-        camera.fov = 25;
+        camera.fov = defaultPOV;
         console.log("BIGGEST", camera.fov);
       } else if (width > 1024) {
-        camera.fov = 30;
+        camera.fov = defaultPOV + POVincrement;
         console.log("lg", camera.fov);
       } else if (width > 768) {
-        camera.fov = 35;
+        camera.fov = defaultPOV + POVincrement * 2;
         console.log("md", camera.fov);
       } else if (width > 640) {
-        camera.fov = 40;
+        camera.fov = defaultPOV + POVincrement * 3;
         console.log("sm", camera.fov);
       } else {
-        camera.fov = 45;
+        camera.fov = defaultPOV + POVincrement * 4;
         console.log("smallest", camera.fov);
       }
     }
