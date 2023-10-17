@@ -10,7 +10,7 @@ const Hero = () => {
       {/*Hero Content */}
       <div
         id="hero-content"
-        className={`${styles.paddingX} absolute inset-0 top-[150px] mx-auto flex max-w-7xl gap-5 sm:top-[220px]`}
+        className={`${styles.paddingX} absolute inset-0 top-[150px] mx-auto flex max-w-7xl gap-5 sm:top-[260px]`}
       >
         {/*Scroll Down Icon */}
         <div
@@ -21,7 +21,7 @@ const Hero = () => {
           <div className="violet-gradient h-40 w-1 sm:h-80" />
         </div>
         {/* mt-28 */}
-        <div className="text-[70px] sm:text-[80px] md:text-[90px] lg:text-[100px] xl:text-[110px]">
+        <div className="text-[70px] sm:text-[70px] md:text-[75px] lg:text-[100px] xl:text-[110px]">
           <h1 className={`${styles.heroHeadText} leading-tight text-white`}>
             Hi, I'm <br></br>
             <span className="text-[#915EFF]">Christian</span>
