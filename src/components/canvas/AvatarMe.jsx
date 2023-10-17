@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { MathUtils } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
-const Avatar = ({ butterflyPosition, offsetX }) => {
+const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
   const gltf = useGLTF("./readyPlayerMe.glb");
   const { scene } = gltf;
   const { camera } = useThree();
@@ -21,12 +21,19 @@ const Avatar = ({ butterflyPosition, offsetX }) => {
   const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
   const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
   const [avatarScale, setAvatarScale] = useState(1); //default scale
-  const [avatarPosition, setAvatarPosition] = useState([0, 0, 0]); // default position
+  const [avatarPosition, setAvatarPosition] = useState([0, -10.5, 0 + offsetX]); // default position
 
   useEffect(() => {
     const width = window.innerWidth;
-    // if (widi)
-  }, [offsetX]);
+    if (width < 1024) {
+      setOffsetX(-1.5);
+    } else if (width < 1280) {
+      setOffsetX(-2.5);
+      console.log("WALDO", offsetX);
+    } else {
+      setOffsetX(-3.5);
+    }
+  }, [window.innerWidth]);
 
   //hide hands
   scene.traverse((child) => {

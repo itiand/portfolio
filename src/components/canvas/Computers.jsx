@@ -37,16 +37,16 @@ const FovAdjust = ({ controlsRef }) => {
     function handleResize() {
       const width = window.innerWidth;
       console.log("current width:", width);
-      if (width > 1280) {
+      if (width >= 1280) {
         camera.fov = defaultPOV;
         console.log("BIGGEST", camera.fov);
-      } else if (width > 1024) {
+      } else if (width >= 1024) {
         camera.fov = defaultPOV + POVincrement;
         console.log("lg", camera.fov);
-      } else if (width > 768) {
+      } else if (width >= 768) {
         camera.fov = defaultPOV + POVincrement * 2;
         console.log("md", camera.fov);
-      } else if (width > 640) {
+      } else if (width >= 640) {
         camera.fov = defaultPOV + POVincrement * 3;
         console.log("sm", camera.fov);
       } else {
@@ -78,7 +78,8 @@ const FovAdjust = ({ controlsRef }) => {
 };
 
 const ComputerCanvas = () => {
-  const OFFSET_X = -3.5;
+  // const OFFSET_X = -3.5;
+  const [OFFSET_X, setOffsetX] = useState(-3.5);
   const spotLightRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
   const [butterflyPosition, setButterflyPosition] = useState(
@@ -121,7 +122,11 @@ const ComputerCanvas = () => {
         />
         {/* <Computers /> */}
         <FovAdjust controlsRef={controlsRef} />
-        <Avatar butterflyPosition={butterflyPosition} offsetX={OFFSET_X} />
+        <Avatar
+          butterflyPosition={butterflyPosition}
+          offsetX={OFFSET_X}
+          setOffsetX={setOffsetX}
+        />
         <Butterfly
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
