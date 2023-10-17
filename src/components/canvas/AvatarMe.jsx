@@ -20,6 +20,13 @@ const Avatar = ({ butterflyPosition, offsetX }) => {
   const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
   const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
   const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
+  const [avatarScale, setAvatarScale] = useState(1); //default scale
+  const [avatarPosition, setAvatarPosition] = useState([0, 0, 0]); // default position
+
+  useEffect(() => {
+    const width = window.innerWidth;
+    // if (widi)
+  }, [offsetX]);
 
   //hide hands
   scene.traverse((child) => {
@@ -133,7 +140,7 @@ const Avatar = ({ butterflyPosition, offsetX }) => {
 
     //body rotation
     scene.rotation.y = THREE.MathUtils.clamp(
-      currentDirection.x * 0.2 + 1.2,
+      currentDirection.x * 0.2 + 1.5,
       -MAX_ROTATION_Y,
       MAX_ROTATION_Y,
     );
@@ -149,7 +156,7 @@ const Avatar = ({ butterflyPosition, offsetX }) => {
     <primitive
       object={scene}
       position={[0, -10.5, 0 + offsetX]}
-      rotation={[0, 1.2, 0]}
+      rotation={[0, 1.5, 0]}
       scale={17}
     />
   );
