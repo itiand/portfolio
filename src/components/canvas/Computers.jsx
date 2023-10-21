@@ -100,7 +100,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
