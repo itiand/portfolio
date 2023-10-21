@@ -1,10 +1,12 @@
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Preload, Plane } from "@react-three/drei";
+import * as THREE from "three";
+
 import Avatar from "./AvatarMe";
 import CanvasLoader from "../Loader";
 import Butterfly from "./Butterfly";
-import * as THREE from "three";
+import PlaneComponent from "./Plane";
 
 // const Computers = ({ isMobile }) => {
 //   const computer = useGLTF("./toon_cat_free/scene.gltf");
@@ -18,50 +20,82 @@ import * as THREE from "three";
 //     />
 //   );
 // };
-const PlaneComponent = ({ butterflyPosition }) => {
-  const { camera, scene } = useThree();
-  const planeRef = useRef();
+
+//TAIWIND BREAKPOINTS
+// sm: 640px
+// md: 768px
+// lg: 1024px
+// xl: 1280px
+// 2xl: 1536px
+
+const FovAdjust = ({ controlsRef }) => {
+  const { camera } = useThree();
 
   useEffect(() => {
-    if (planeRef.current && camera) {
-      planeRef.current.lookAt(camera.position);
+    const defaultPOV = 25;
+    const POVincrement = 2.5;
+    function handleResize() {
+      const width = window.innerWidth;
+      console.log("current width:", width);
+      if (width >= 1280) {
+        camera.fov = defaultPOV;
+        console.log("BIGGEST", camera.fov);
+      } else if (width >= 1024) {
+        camera.fov = defaultPOV + POVincrement;
+        console.log("lg", camera.fov);
+      } else if (width >= 768) {
+        camera.fov = defaultPOV + POVincrement * 2;
+        console.log("md", camera.fov);
+      } else if (width >= 640) {
+        camera.fov = defaultPOV + POVincrement * 3;
+        console.log("sm", camera.fov);
+      } else {
+        camera.fov = defaultPOV + POVincrement * 4;
+        console.log("smallest", camera.fov);
+      }
     }
-  }, [camera.position]);
 
-  return (
-    <Plane
-      ref={planeRef}
-      position={[butterflyPosition.x, 0, 0]}
-      args={[100, 100]}
-    >
-      <meshStandardMaterial
-        attach="material"
-        opacity={0.2}
-        transparent
-        side={THREE.DoubleSide}
-      />
-    </Plane>
-  );
+    ////LOG CAMERA POSITION
+    function logCameraPosition() {
+      console.log("Camera Position:", camera.position);
+    }
+    if (controlsRef.current) {
+      controlsRef.current.addEventListener("change", logCameraPosition);
+    }
+    //////
+
+    camera.addEventListener("change", logCameraPosition);
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      camera.removeEventListener("change", logCameraPosition);
+    };
+  }, [camera, controlsRef]);
+
+  return null;
 };
 
 const ComputerCanvas = () => {
-  const OFFSET_X = -3.5;
+  // const OFFSET_X = -3.5;
+  const [OFFSET_X, setOffsetX] = useState(-3.5);
   const spotLightRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
   const [butterflyPosition, setButterflyPosition] = useState(
     new THREE.Vector3(5, 3, 5),
   );
 
-  // useEffect(() => {
-  //   console.log("Butterfly position in parent:", butterflyPosition);
-  // }, [butterflyPosition]);
-
+  const controlsRef = useRef();
   return (
     <Canvas
       frameloop="always"
       shadows
       camera={{
-        position: [20, 3, 5 + OFFSET_X],
+        position: [
+          20.856625066023227, -0.01068391610383157, -0.03152517784785947,
+        ], // 20, 3, 5 previously
+        // position: [20, 3, 5],
         fov: 25,
       }}
       gl={{ preserveDrawingBuffer: true }}
@@ -80,13 +114,19 @@ const ComputerCanvas = () => {
 
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-        // autoRotate
-        // enableZoom={false}
-        // maxPolarAngle={Math.PI / 2}
-        // minPolarAngle={Math.PI / 2}
+          ref={controlsRef}
+          // autoRotate
+          // enableZoom={false}
+          // maxPolarAngle={Math.PI / 2}
+          // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
-        <Avatar butterflyPosition={butterflyPosition} offsetX={OFFSET_X} />
+        <FovAdjust controlsRef={controlsRef} />
+        <Avatar
+          butterflyPosition={butterflyPosition}
+          offsetX={OFFSET_X}
+          setOffsetX={setOffsetX}
+        />
         <Butterfly
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
