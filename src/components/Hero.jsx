@@ -2,7 +2,6 @@ import React from "react";
 import { styles } from "../styles";
 
 import { ComputerCanvas } from "./canvas";
-// import { Computers } from "./canvas";
 
 const Hero = () => {
   return (

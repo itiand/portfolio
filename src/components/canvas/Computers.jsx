@@ -95,7 +95,6 @@ const ComputerCanvas = () => {
         position: [
           20.856625066023227, -0.01068391610383157, -0.03152517784785947,
         ], // 20, 3, 5 previously
-        // position: [20, 3, 5],
         fov: 25,
       }}
       gl={{ preserveDrawingBuffer: true }}
