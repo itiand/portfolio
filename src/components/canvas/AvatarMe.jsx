@@ -1,7 +1,6 @@
 import { useGLTF } from "@react-three/drei";
 import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
-import { MathUtils } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
 const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
@@ -170,4 +169,3 @@ const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
 };
 
 export default Avatar;
-// export default AvatarCanvas;

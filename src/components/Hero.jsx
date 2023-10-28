@@ -2,7 +2,6 @@ import React from "react";
 import { styles } from "../styles";
 
 import { ComputerCanvas } from "./canvas";
-// import { Computers } from "./canvas";
 
 const Hero = () => {
   return (
@@ -24,7 +23,7 @@ const Hero = () => {
         <div className="text-[70px] sm:text-[70px] md:text-[75px] lg:text-[100px] xl:text-[110px]">
           <h1 className={`${styles.heroHeadText} leading-tight text-white`}>
             Hi, I'm <br></br>
-            <span className="text-[#915EFF]">Christian</span>
+            <span className="text-[#d5874b]">Christian</span>
           </h1>
           <p
             className={`${styles.heroSubText} mt-2 leading-tight text-white-100`}
