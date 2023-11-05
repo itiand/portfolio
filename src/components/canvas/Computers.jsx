@@ -39,19 +39,19 @@ const FovAdjust = ({ controlsRef }) => {
       console.log("current width:", width);
       if (width >= 1280) {
         camera.fov = defaultPOV;
-        console.log("BIGGEST", camera.fov);
+        console.log("FOVADJUST - BIGGEST", camera.fov);
       } else if (width >= 1024) {
         camera.fov = defaultPOV + POVincrement;
-        console.log("lg", camera.fov);
+        console.log("FOVADJUST lg", camera.fov);
       } else if (width >= 768) {
         camera.fov = defaultPOV + POVincrement * 2;
-        console.log("md", camera.fov);
+        console.log("FOVADJUST md", camera.fov);
       } else if (width >= 640) {
         camera.fov = defaultPOV + POVincrement * 3;
-        console.log("sm", camera.fov);
+        console.log("FOVADJUST sm", camera.fov);
       } else {
         camera.fov = defaultPOV + POVincrement * 4;
-        console.log("smallest", camera.fov);
+        console.log("FOVADJUST smallest", camera.fov);
       }
     }
 
@@ -103,7 +103,7 @@ const ComputerCanvas = () => {
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
-      <pointLight intensity={1} />
+      {/* <pointLight intensity={1} /> */}
       <ambientLight intensity={0.7} />
       <spotLight intensity={100} position={[-20, 10, 5]} ref={spotLightRef} />
       {/* {spotLightRef.current && (
