@@ -30,7 +30,7 @@ import PlaneComponent from "./Plane";
 
 //change the FOV - to change the size appearance when window size changes
 //maybe change scale?
-const FovAdjust = ({ controlsRef }) => {
+const FovAdjust = ({ controlsRef, setOffsetX }) => {
   const { camera } = useThree();
 
   useEffect(() => {
@@ -39,21 +39,33 @@ const FovAdjust = ({ controlsRef }) => {
     function handleResize() {
       const width = window.innerWidth;
       console.log("current width:", width);
-      if (width >= 1280) {
+
+      if (width >= 1536) {
+        //2XL biggest
         camera.fov = defaultPOV;
-        console.log("FOVADJUST - BIGGEST", camera.fov);
+        setOffsetX(-3.5);
+      } else if (width >= 1280) {
+        //XL
+        setOffsetX(-3);
+        console.log("xl", camera.fov);
       } else if (width >= 1024) {
+        //LG
+        setOffsetX(-2.5);
         camera.fov = defaultPOV + POVincrement;
-        console.log("FOVADJUST lg", camera.fov);
+        console.log("lg", camera.fov);
       } else if (width >= 768) {
+        //MD
+        setOffsetX(-2.1);
         camera.fov = defaultPOV + POVincrement * 2;
-        console.log("FOVADJUST md", camera.fov);
+        console.log("md", camera.fov);
       } else if (width >= 640) {
-        camera.fov = defaultPOV + POVincrement * 3;
-        console.log("FOVADJUST sm", camera.fov);
+        //SM
+        camera.fov = defaultPOV + POVincrement * 3.5;
+        console.log("sm", camera.fov);
       } else {
+        //XS
         // camera.fov = defaultPOV + POVincrement * 4;
-        console.log("FOVADJUST smallest", camera.fov);
+        console.log("xs", camera.fov);
       }
     }
 
@@ -74,7 +86,7 @@ const FovAdjust = ({ controlsRef }) => {
       window.removeEventListener("resize", handleResize);
       camera.removeEventListener("change", logCameraPosition);
     };
-  }, [camera, controlsRef]);
+  }, [camera, controlsRef, window.innerWidth]);
 
   return null;
 };
@@ -122,7 +134,7 @@ const ComputerCanvas = () => {
           // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
-        <FovAdjust controlsRef={controlsRef} />
+        <FovAdjust controlsRef={controlsRef} setOffsetX={setOffsetX} />
         <Avatar
           butterflyPosition={butterflyPosition}
           offsetX={OFFSET_X}

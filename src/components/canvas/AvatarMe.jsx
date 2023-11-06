@@ -22,28 +22,28 @@ const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
   const [avatarScale, setAvatarScale] = useState(1); //default scale
   const [avatarPosition, setAvatarPosition] = useState([0, -10.5, 0 + offsetX]); // default position
 
-  //responsive offset
-  useEffect(() => {
-    const width = window.innerWidth;
-    if (width < 640) {
-      //xs (smallest)
-      console.log("Avatar Component Smallest");
-    } else if (width < 768) {
-      //sm
-    } else if (width < 1024) {
-      //md
-      setOffsetX(-1.5);
-    } else if (width < 1280) {
-      // lg
-      setOffsetX(-2.5);
-      console.log("WALDO", offsetX);
-    } else if (width < 1536) {
-      //xl
-    } else {
-      //2xl (largest)
-      setOffsetX(-3.5);
-    }
-  }, [window.innerWidth]);
+  // //responsive offset
+  // useEffect(() => {
+  //   const width = window.innerWidth;
+  //   if (width < 640) {
+  //     //xs (smallest)
+  //     console.log("Avatar Component Smallest");
+  //   } else if (width < 768) {
+  //     //sm
+  //   } else if (width < 1024) {
+  //     //md
+  //     setOffsetX(-2);
+  //   } else if (width < 1280) {
+  //     // lg
+  //     setOffsetX(-2.5);
+  //   } else if (width < 1536) {
+  //     //xl
+  //     setOffsetX(-3);
+  //   } else {
+  //     //2xl (largest)
+  //     setOffsetX(-3.5);
+  //   }
+  // }, [window.innerWidth]);
 
   //hide hands
   scene.traverse((child) => {

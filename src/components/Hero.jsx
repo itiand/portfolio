@@ -9,7 +9,7 @@ const Hero = () => {
       {/*Hero Content */}
       <div
         id="hero-content"
-        className={`${styles.paddingX} absolute inset-0 top-[150px] mx-auto flex max-w-7xl gap-5 sm:top-[260px]`}
+        className={`${styles.paddingX} absolute inset-0 top-[150px] mx-auto flex max-w-7xl gap-5 sm:top-[350px] lg:top-[260px]`}
       >
         {/*Scroll Down Icon */}
         {/* <div
