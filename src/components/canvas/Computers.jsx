@@ -52,7 +52,7 @@ const FovAdjust = ({ controlsRef }) => {
         camera.fov = defaultPOV + POVincrement * 3;
         console.log("FOVADJUST sm", camera.fov);
       } else {
-        camera.fov = defaultPOV + POVincrement * 4;
+        // camera.fov = defaultPOV + POVincrement * 4;
         console.log("FOVADJUST smallest", camera.fov);
       }
     }
@@ -101,7 +101,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      <axesHelper args={[5]} />
+      {/* <axesHelper args={[5]} /> */}
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />

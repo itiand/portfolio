@@ -31,14 +31,16 @@ const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
     } else if (width < 768) {
       //sm
     } else if (width < 1024) {
-      //lg
+      //md
       setOffsetX(-1.5);
     } else if (width < 1280) {
-      // xl
+      // lg
       setOffsetX(-2.5);
       console.log("WALDO", offsetX);
+    } else if (width < 1536) {
+      //xl
     } else {
-      // 2xl (largest)
+      //2xl (largest)
       setOffsetX(-3.5);
     }
   }, [window.innerWidth]);
