@@ -28,6 +28,8 @@ import PlaneComponent from "./Plane";
 // xl: 1280px
 // 2xl: 1536px
 
+//change the FOV - to change the size appearance when window size changes
+//maybe change scale?
 const FovAdjust = ({ controlsRef }) => {
   const { camera } = useThree();
 
@@ -99,7 +101,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      {/* <axesHelper args={[5]} /> */}
+      <axesHelper args={[5]} />
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
