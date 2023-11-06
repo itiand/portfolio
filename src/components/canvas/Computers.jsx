@@ -55,11 +55,12 @@ const FovAdjust = ({ controlsRef, setOffsetX }) => {
         console.log("lg", camera.fov);
       } else if (width >= 768) {
         //MD
-        setOffsetX(-2.1);
+        setOffsetX(-2.2);
         camera.fov = defaultPOV + POVincrement * 2;
         console.log("md", camera.fov);
       } else if (width >= 640) {
         //SM
+        setOffsetX(-2.1);
         camera.fov = defaultPOV + POVincrement * 3.5;
         console.log("sm", camera.fov);
       } else {
