@@ -19,8 +19,8 @@ const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
   const [eyeScale, setEyeScale] = useState(new THREE.Vector3(1, 1, 1));
   const [currentDirection, setCurrentDirection] = useState(new THREE.Vector2());
   const [targetDirection, setTargetDirection] = useState(new THREE.Vector2());
-  const [avatarScale, setAvatarScale] = useState(1); //default scale
-  const [avatarPosition, setAvatarPosition] = useState([0, -10.5, 0 + offsetX]); // default position
+  // const [avatarScale, setAvatarScale] = useState(1); //default scale
+  // const [avatarPosition, setAvatarPosition] = useState([0, -10.5, 0 + offsetX]); // default position
 
   // //responsive offset
   // useEffect(() => {
