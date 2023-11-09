@@ -65,7 +65,8 @@ const FovAdjust = ({ controlsRef, setOffsetX }) => {
         console.log("sm", camera.fov);
       } else {
         //XS
-        // camera.fov = defaultPOV + POVincrement * 4;
+        setOffsetX(-1);
+        camera.fov = defaultPOV + POVincrement;
         console.log("xs", camera.fov);
       }
     }
