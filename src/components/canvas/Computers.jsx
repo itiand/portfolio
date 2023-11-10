@@ -30,7 +30,7 @@ import PlaneComponent from "./Plane";
 
 //change the FOV - to change the size appearance when window size changes
 //maybe change scale?
-const FovAdjust = ({ controlsRef, setOffsetX }) => {
+const FovAdjust = ({ controlsRef, setOffsetX, setOffsetY }) => {
   const { camera, size } = useThree();
 
   useEffect(() => {
@@ -38,11 +38,15 @@ const FovAdjust = ({ controlsRef, setOffsetX }) => {
 
     const defaultPOV = 25;
     const POVincrement = 2.5;
+
     function handleResize() {
       // const width = window.innerWidth;
       const { width, height } = size;
 
       console.log("current width:", width);
+      console.log("camera aspect", camera.aspect);
+
+      const rightOffset = width * 0.15;
 
       if (width >= 1536) {
         //2XL biggest
@@ -69,8 +73,9 @@ const FovAdjust = ({ controlsRef, setOffsetX }) => {
         console.log("sm", camera.fov);
       } else {
         //XS
-        setOffsetX(-1);
-        camera.fov = defaultPOV + POVincrement * 4;
+        setOffsetX(-0.8);
+        setOffsetY(-3);
+        camera.fov = defaultPOV + POVincrement * 2;
         console.log("xs", camera.fov);
       }
     }
@@ -100,6 +105,7 @@ const FovAdjust = ({ controlsRef, setOffsetX }) => {
 const ComputerCanvas = () => {
   // const OFFSET_X = -3.5;
   const [OFFSET_X, setOffsetX] = useState(-3.5);
+  const [OFFSET_Y, setOffsetY] = useState(0);
   const spotLightRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
   const [butterflyPosition, setButterflyPosition] = useState(
@@ -119,7 +125,7 @@ const ComputerCanvas = () => {
       }}
       gl={{ preserveDrawingBuffer: true }}
     >
-      {/* <axesHelper args={[5]} /> */}
+      <axesHelper args={[5]} />
 
       {/*LIGHTS*/}
       <hemisphereLight intensity={2} groundColor="purple" />
@@ -140,16 +146,22 @@ const ComputerCanvas = () => {
           // minPolarAngle={Math.PI / 2}
         />
         {/* <Computers /> */}
-        <FovAdjust controlsRef={controlsRef} setOffsetX={setOffsetX} />
+        <FovAdjust
+          controlsRef={controlsRef}
+          setOffsetX={setOffsetX}
+          setOffsetY={setOffsetY}
+        />
         <Avatar
           butterflyPosition={butterflyPosition}
           offsetX={OFFSET_X}
+          offsetY={OFFSET_Y}
           setOffsetX={setOffsetX}
         />
         <Butterfly
           setButterflyPosition={setButterflyPosition}
           butterflyPosition={butterflyPosition}
           offsetX={OFFSET_X}
+          offsetY={OFFSET_Y}
         />
         {/* <PlaneComponent butterflyPosition={butterflyPosition} /> */}
       </Suspense>

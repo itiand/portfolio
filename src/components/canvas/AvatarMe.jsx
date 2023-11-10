@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
-const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
+const Avatar = ({ butterflyPosition, offsetX, setOffsetX, offsetY }) => {
   const gltf = useGLTF("./readyPlayerMe.glb");
   const { scene } = gltf;
   const { camera } = useThree();
@@ -172,7 +172,7 @@ const Avatar = ({ butterflyPosition, offsetX, setOffsetX }) => {
   return (
     <primitive
       object={scene}
-      position={[0, -10.5, 0 + offsetX]}
+      position={[0, -10.5 + offsetY, 0 + offsetX]}
       rotation={[0, 1.5, 0]}
       scale={17}
     />

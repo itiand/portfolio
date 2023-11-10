@@ -4,7 +4,12 @@ import { createNoise3D } from "simplex-noise";
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 
-const Butterfly = ({ setButterflyPosition, butterflyPosition, offsetX }) => {
+const Butterfly = ({
+  setButterflyPosition,
+  butterflyPosition,
+  offsetX,
+  offsetY,
+}) => {
   butterflyPosition.z -= offsetX;
   const { camera } = useThree();
   const blueButterfly = useRef();
@@ -206,7 +211,7 @@ const Butterfly = ({ setButterflyPosition, butterflyPosition, offsetX }) => {
       <primitive
         object={scene}
         ref={blueButterfly}
-        position={[5, 3, 5 + offsetX]}
+        position={[5, 3 + offsetY, 3 + offsetX]}
         rotation={[0.2, 3, 0]}
         scale={0.2}
       />
