@@ -31,13 +31,17 @@ import PlaneComponent from "./Plane";
 //change the FOV - to change the size appearance when window size changes
 //maybe change scale?
 const FovAdjust = ({ controlsRef, setOffsetX }) => {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
 
   useEffect(() => {
+    console.log("SIZE", size);
+
     const defaultPOV = 25;
     const POVincrement = 2.5;
     function handleResize() {
-      const width = window.innerWidth;
+      // const width = window.innerWidth;
+      const { width, height } = size;
+
       console.log("current width:", width);
 
       if (width >= 1536) {
@@ -66,7 +70,7 @@ const FovAdjust = ({ controlsRef, setOffsetX }) => {
       } else {
         //XS
         setOffsetX(-1);
-        camera.fov = defaultPOV + POVincrement;
+        camera.fov = defaultPOV + POVincrement * 4;
         console.log("xs", camera.fov);
       }
     }
